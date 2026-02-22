@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fake Review Detector</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #2193b0;
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            border: 2px solid #2193b0;
+            border-radius: 8px;
+            outline: none;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #2193b0;
+            color: white;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 14px;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background-color: #1a7288;
+            transform: scale(1.03);
+        }
+        .result {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .bar-container {
+            margin-top: 12px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            height: 24px;
+        }
+        .bar-real {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background-color: #28a745;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        .bar-fake {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background-color: #dc3545;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        /* Sentiment color classes */
+        .sentiment-positive {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .sentiment-neutral {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .sentiment-negative {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        #historyContainer {
+            margin-top: 40px;
+        }
+        #historyList li {
+            background: #f9f9f9;
+            padding: 10px;
+            margin: 6px 0;
+            border-left: 6px solid #2193b0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Fake Review Detector</h1>
+
+        <form id="reviewForm">
+            <input id="productName" type="text" placeholder="Enter product name..." />
+            <textarea id="reviewText" rows="5" placeholder="Enter product review..."></textarea>
+            <button type="submit">Check Review</button>
+        </form>
+
+        <div id="result" class="result"></div>
+
+        <div class="bar-container">
+            <div id="barReal" class="bar-real"></div>
+        </div>
+        <div class="bar-container">
+            <div id="barFake" class="bar-fake"></div>
+        </div>
+
+        <div id="sentimentText" class="sentiment"></div>
+
+        <!-- Prediction History -->
+        <div id="historyContainer">
+            <h3>Past Predictions</h3>
+            <ul id="historyList"></ul>
+        </div>
+    </div>
+
+    <script>
+    // Keep a history array
+    let history = [];
+
+    document.getElementById("reviewForm").onsubmit = async function (e) {
+        e.preventDefault();
+
+        const product = document.getElementById("productName").value.trim();
+        const review = document.getElementById("reviewText").value.trim();
+
+        if (!product || !review) {
+            alert("Please enter both product name and review!");
+            return;
+        }
+
+        const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ product, review })
+        });
+
+        const data = await response.json();
+        const text = data.prediction;
+        const productName = data.product;
+        const sentiment = data.sentiment;
+
+        // Update result text
+        document.getElementById("result").innerText =
+            "Product: " + productName + " — " + text;
+
+        // Apply sentiment text + color
+        const sentimentEl = document.getElementById("sentimentText");
+        sentimentEl.innerText = "Sentiment: " + sentiment;
+        sentimentEl.classList.remove("sentiment-positive", "sentiment-neutral", "sentiment-negative");
+
+        if (sentiment === "Positive") {
+            sentimentEl.classList.add("sentiment-positive");
+        } else if (sentiment === "Neutral") {
+            sentimentEl.classList.add("sentiment-neutral");
+        } else {
+            sentimentEl.classList.add("sentiment-negative");
+        }
+
+        // Parse percentages
+        let parts = text.split(",");
+        const realText = parts[0].trim();
+        const fakeText = parts[1].trim();
+
+        const realVal = parseFloat(realText.split("%")[0]);
+        const fakeVal = parseFloat(fakeText.split("%")[0]);
+
+        // Update bars
+        document.getElementById("barReal").style.width = realVal + "%";
+        document.getElementById("barFake").style.width = fakeVal + "%";
+
+        // Add to history
+        history.unshift({
+            product: productName,
+            review: review,
+            prediction: text,
+            sentiment: sentiment
+        });
+
+        const list = document.getElementById("historyList");
+        list.innerHTML = "";
+        history.forEach(item => {
+            const li = document.createElement("li");
+            li.innerText = `${item.product}: "${item.review}" — ${item.prediction} (${item.sentiment})`;
+            list.appendChild(li);
+        });
+    };
+    </script>
+
+</body>
+</html>
