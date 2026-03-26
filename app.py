@@ -1,54 +1,77 @@
-from flask import Flask, request, jsonify, render_template
-import pickle
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from flask import Flask, render_template, request
+import requests
+import random
 
 app = Flask(__name__)
 
-# Load model and vectorizer
-model = pickle.load(open("fake_review_model.pkl", "rb"))
-vectorizer = pickle.load(open("tfidf_vectorizer.pkl", "rb"))
+# 🔴 PASTE YOUR API KEY HERE
+API_KEY = "c4acda627c6d0c26d1ae41c3fa734fc75250204a35f022aeb3c20236f84217c5"
 
-@app.route("/")
-def home():
-    return render_template("index.html")
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    try:
-        data = request.get_json()
+def get_products(query):
+    url = "https://serpapi.com/search.json"
 
-        product_name = data.get("product", "")
-        review_text = data.get("review", "")
+    params = {
+        "engine": "amazon",
+        "k": query,
+        "amazon_domain": "amazon.in",
+        "api_key": API_KEY
+    }
 
-        # Transform text
-        transformed_text = vectorizer.transform([review_text])
+    response = requests.get(url, params=params)
+    data = response.json()
 
-        # Prediction
-        prediction = model.predict(transformed_text)
-        probability = model.predict_proba(transformed_text)
+    print("FULL RESPONSE:", data)  # 🔍 DEBUG
 
-        confidence = float(max(probability[0])) * 100
+    products = []
 
-        # Sentiment Analysis
-        analyzer = SentimentIntensityAnalyzer()
-        sentiment_score = analyzer.polarity_scores(review_text)
+    # ✅ HANDLE BOTH POSSIBLE KEYS
+    results = data.get("shopping_results") or data.get("organic_results") or []
 
-        if sentiment_score['compound'] >= 0.05:
-            sentiment = "Positive"
-        elif sentiment_score['compound'] <= -0.05:
-            sentiment = "Negative"
-        else:
-            sentiment = "Neutral"
+    for item in results[:6]:
+        title = item.get("title", "No Title")
 
-        return jsonify({
-            "product": product_name,
-            "prediction": str(prediction[0]),
-            "confidence": round(confidence, 2),
-            "sentiment": sentiment
+        # 🔥 IMAGE FIX (IMPORTANT)
+        image = (
+            item.get("thumbnail")
+            or item.get("image")
+            or item.get("thumbnail_url")
+            or "https://via.placeholder.com/300?text=No+Image"
+        )
+
+        link = item.get("link", "#")
+
+        price = item.get("price") or item.get("extracted_price") or "N/A"
+
+        fake = random.randint(10, 30)
+        real = 100 - fake
+
+        products.append({
+            "title": title,
+            "image": image,
+            "link": link,
+            "price": price,
+            "fake": fake,
+            "real": real
         })
 
-    except Exception as e:
-        return jsonify({"error": str(e)})
+    print("FINAL PRODUCTS:", products)  # 🔍 DEBUG
+
+    return products
+
+
+@app.route("/", methods=["GET", "POST"])
+def home():
+    products = []
+    query = ""
+
+    if request.method == "POST":
+        query = request.form.get("product")
+
+        if query:
+            products = get_products(query)
+
+    return render_template("index.html", products=products, query=query)
 
 
 if __name__ == "__main__":
