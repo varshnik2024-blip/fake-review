@@ -5,7 +5,8 @@ import random
 app = Flask(__name__)
 
 # 🔴 PASTE YOUR API KEY HERE
-API_KEY = "c4acda627c6d0c26d1ae41c3fa734fc75250204a35f022aeb3c20236f84217c5"
+import os
+API_KEY = os.environ.get("API_KEY")
 
 
 def get_products(query):
