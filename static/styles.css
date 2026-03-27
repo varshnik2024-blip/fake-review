@@ -1,51 +1,68 @@
+/* 🌟 Background */
 body {
-    background: #0b1b2b;
-    color: white;
-    font-family: Arial;
+    background: #ffffff;   /* white background */
+    color: #111827;        /* dark text */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 🌟 Heading styling like your image */
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
     text-align: center;
+    line-height: 1.2;
 }
 
-.container {
-    padding: 40px;
+/* Different colors for words */
+.hero-title .fake {
+    color: #ef4444; /* red */
 }
 
-input {
-    padding: 10px;
-    width: 250px;
-    border-radius: 20px;
+.hero-title .buy {
+    color: #10b981; /* green */
+}
+
+.hero-title .anything {
+    color: #14b8a6; /* teal */
+}
+
+/* Subtext */
+.hero-sub {
+    text-align: center;
+    color: #6b7280;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+/* Input box */
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.search-box input {
+    padding: 12px;
+    width: 350px;
+    border-radius: 10px 0 0 10px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.search-box button {
+    background: #10b981;
+    color: white;
     border: none;
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    background: #00e676;
-    color: black;
-    border-radius: 20px;
+    padding: 12px 20px;
+    border-radius: 0 10px 10px 0;
     cursor: pointer;
 }
 
-.grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 30px;
-}
-
+/* Product cards */
 .card {
-    background: #12263a;
-    margin: 15px;
-    padding: 15px;
+    background: #f9fafb;
     border-radius: 15px;
-    width: 250px;
-}
-
-.card img {
-    width: 100%;
-    border-radius: 10px;
-}
-
-.price {
-    color: #00e676;
-    font-weight: bold;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
