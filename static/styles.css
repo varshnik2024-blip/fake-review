@@ -22,11 +22,11 @@ body {
 
 /* 🔥 COLORED WORDS */
 .hero-title .fake {
-    color: #ef4444; /* red */
+    color: #ef4444;
 }
 
 .hero-title .buy {
-    color: #10b981; /* green */
+    color: #10b981;
 }
 
 /* 🔥 SUBTITLE */
@@ -46,7 +46,6 @@ body {
     width: 250px;
     border-radius: 20px;
     border: 1px solid #ccc;
-    outline: none;
 }
 
 .search-box button {
@@ -65,60 +64,52 @@ body {
     margin-top: 20px;
 }
 
-/* 🔥 PRODUCT GRID (HORIZONTAL) */
+/* 🔥 IMPORTANT: HORIZONTAL GRID */
 .card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr); /* FORCE 4 CARDS IN ROW */
     gap: 25px;
     padding: 30px;
 }
 
-/* 🔥 CARD DESIGN */
+/* 🔥 CARD */
 .card {
     background: #ffffff;
     border-radius: 15px;
     padding: 20px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-}
-
-/* 🖼 IMAGE */
+/* IMAGE */
 .card img {
     width: 100%;
     height: 180px;
     object-fit: contain;
 }
 
-/* 📝 TITLE */
+/* TITLE */
 .card h3 {
-    font-size: 15px;
-    margin: 10px 0;
+    font-size: 14px;
 }
 
-/* 💰 PRICE */
+/* PRICE */
 .price {
     font-weight: bold;
-    margin: 10px 0;
 }
 
-/* ❌ FAKE */
+/* FAKE / REAL */
 .fake-text {
     color: #ef4444;
     font-weight: bold;
 }
 
-/* ✅ REAL */
 .real-text {
     color: #10b981;
     font-weight: bold;
 }
 
-/* 🔗 BUTTON */
+/* BUTTON */
 .card a {
     display: inline-block;
     margin-top: 10px;
