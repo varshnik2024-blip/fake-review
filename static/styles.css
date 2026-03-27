@@ -1,19 +1,26 @@
-/* 🌟 Background */
+/* 🔥 GLOBAL STYLING */
 body {
-    background: #ffffff;   /* white background */
-    color: #111827;        /* dark text */
+    background: #ffffff;
+    color: #111827;
     font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* 🌟 Heading styling like your image */
+/* 🔥 HERO SECTION */
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+/* 🔥 MAIN TITLE */
 .hero-title {
     font-size: 3rem;
     font-weight: 800;
-    text-align: center;
     line-height: 1.2;
 }
 
-/* Different colors for words */
+/* 🔥 COLORED WORDS */
 .hero-title .fake {
     color: #ef4444; /* red */
 }
@@ -22,47 +29,102 @@ body {
     color: #10b981; /* green */
 }
 
-.hero-title .anything {
-    color: #14b8a6; /* teal */
-}
-
-/* Subtext */
-.hero-sub {
-    text-align: center;
-    color: #6b7280;
-    font-size: 1.1rem;
+/* 🔥 SUBTITLE */
+.subtitle {
     margin-top: 10px;
+    font-size: 16px;
+    color: #4b5563;
 }
 
-/* Input box */
+/* 🔍 SEARCH BOX */
 .search-box {
-    display: flex;
-    justify-content: center;
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
 .search-box input {
     padding: 12px;
-    width: 350px;
-    border-radius: 10px 0 0 10px;
+    width: 250px;
+    border-radius: 20px;
     border: 1px solid #ccc;
     outline: none;
 }
 
 .search-box button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
     background: #10b981;
     color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 0 10px 10px 0;
+    font-weight: bold;
     cursor: pointer;
 }
 
-/* Product cards */
+/* 🔥 RESULTS TITLE */
+.results-title {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+/* 🔥 PRODUCT GRID (HORIZONTAL) */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 30px;
+}
+
+/* 🔥 CARD DESIGN */
 .card {
-    background: #f9fafb;
+    background: #ffffff;
     border-radius: 15px;
-    padding: 15px;
+    padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* 🖼 IMAGE */
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+}
+
+/* 📝 TITLE */
+.card h3 {
+    font-size: 15px;
+    margin: 10px 0;
+}
+
+/* 💰 PRICE */
+.price {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* ❌ FAKE */
+.fake-text {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+/* ✅ REAL */
+.real-text {
+    color: #10b981;
+    font-weight: bold;
+}
+
+/* 🔗 BUTTON */
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #10b981;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
 }
