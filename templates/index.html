@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fake Review Detector</title>
+<title>TrustScan</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
@@ -26,8 +26,8 @@ function closeModal(id) {
     <h2 class="logo">TrustScan</h2>
     <div class="nav-links">
         <a href="#">Home</a>
-        <a href="#" onclick="openModal('howModal')">How it Works</a>
-        <a href="#" onclick="openModal('aboutModal')">About</a>
+        <a onclick="openModal('howModal')">How it Works</a>
+        <a onclick="openModal('aboutModal')">About</a>
     </div>
 </div>
 
@@ -40,7 +40,7 @@ function closeModal(id) {
 </h1>
 
 <p class="subtitle">
-    Search any product — our AI analyzes reviews and shows what's real and fake
+    Search any product — our AI analyzes review patterns and tells you what's real
 </p>
 
 <form method="POST" class="search-box">
@@ -70,31 +70,35 @@ function closeModal(id) {
 
 <!-- 🔥 HOW IT WORKS MODAL -->
 <div id="howModal" class="modal">
-<div class="modal-box">
+<div class="modal-box big-modal">
 
 <span class="close" onclick="closeModal('howModal')">&times;</span>
 
-<h2>How TrustScan Works</h2>
+<h2 class="modal-title">How it works</h2>
 
-<p>
-🔍 Step 1: Enter any product name (like phone, laptop, etc.)
-</p>
+<div class="steps-grid">
 
-<p>
-🌐 Step 2: We fetch real-time product data using SerpAPI
-</p>
+<div class="step-card">
+<h3>🔍 Enter a product</h3>
+<p>Type any product name or keyword to begin</p>
+</div>
 
-<p>
-🤖 Step 3: Our AI analyzes reviews & patterns
-</p>
+<div class="step-card">
+<h3>🌐 Real-time fetch</h3>
+<p>We pull live product data using SerpAPI</p>
+</div>
 
-<p>
-📊 Step 4: It estimates Fake vs Real review percentage
-</p>
+<div class="step-card">
+<h3>🤖 AI analysis</h3>
+<p>Patterns, language & review behavior are analyzed</p>
+</div>
 
-<p>
-⚡ Step 5: You get instant results to make better decisions
-</p>
+<div class="step-card">
+<h3>📊 Instant verdict</h3>
+<p>Get real vs fake percentage instantly</p>
+</div>
+
+</div>
 
 </div>
 </div>
@@ -108,26 +112,13 @@ function closeModal(id) {
 <h2>About TrustScan</h2>
 
 <p>
-TrustScan is a web application designed to help users identify fake reviews before purchasing products online.
+TrustScan is an AI-powered web application that helps users detect fake reviews before buying products.
 </p>
 
 <p>
-🚀 Built using:
-- Flask (Backend)
-- SerpAPI (Data fetching)
-- HTML, CSS (Frontend)
-</p>
-
-<p>
-🎯 Goal:
-To improve online shopping decisions by providing transparency.
-</p>
-
-<p>
-💡 Future Scope:
-- Real ML model for accuracy  
-- Chrome extension  
-- Mobile app version  
+🚀 Built with Flask, SerpAPI, HTML, CSS  
+🎯 Helps users make smarter decisions  
+💡 Future: ML model + Chrome extension
 </p>
 
 </div>
