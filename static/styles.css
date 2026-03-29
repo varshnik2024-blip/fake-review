@@ -7,6 +7,10 @@ body {
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* 🔥 NAVBAR */
 .navbar {
     display: flex;
@@ -15,12 +19,14 @@ body {
     padding: 15px 40px;
     background: #ffffff;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .logo {
     font-weight: 800;
     color: #10b981;
-    font-size: 20px;
 }
 
 .nav-links a {
@@ -33,17 +39,14 @@ body {
 /* 🔥 HERO */
 .hero {
     text-align: center;
-    padding: 50px 20px;
+    padding: 60px 20px;
 }
 
-/* 🔥 TITLE */
 .hero-title {
     font-size: 3rem;
     font-weight: 800;
-    line-height: 1.2;
 }
 
-/* 🔥 COLORED TEXT */
 .fake {
     color: #ef4444;
 }
@@ -52,10 +55,8 @@ body {
     color: #10b981;
 }
 
-/* 🔥 SUBTITLE */
 .subtitle {
     margin-top: 10px;
-    font-size: 16px;
     color: #4b5563;
 }
 
@@ -66,29 +67,43 @@ body {
 
 .search-box input {
     padding: 12px;
-    width: 250px;
+    width: 260px;
     border-radius: 20px;
     border: 1px solid #ccc;
-    outline: none;
 }
 
 .search-box button {
     padding: 12px 20px;
-    border: none;
     border-radius: 20px;
+    border: none;
     background: #10b981;
     color: white;
     font-weight: bold;
     cursor: pointer;
 }
 
-/* 🔥 RESULTS TITLE */
-.results-title {
-    margin-left: 20px;
-    margin-top: 20px;
+/* 🔥 SECTIONS */
+.section {
+    padding: 60px 20px;
+    text-align: center;
 }
 
-/* 🔥 GRID (HORIZONTAL PRODUCTS) */
+.section h2 {
+    font-size: 28px;
+}
+
+.section p {
+    max-width: 600px;
+    margin: auto;
+    color: #4b5563;
+}
+
+/* 🔥 RESULTS */
+.results-title {
+    margin-left: 20px;
+}
+
+/* 🔥 GRID */
 .card-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -110,36 +125,30 @@ body {
     transform: translateY(-5px);
 }
 
-/* 🖼 IMAGE */
 .card img {
     width: 100%;
     height: 180px;
     object-fit: contain;
 }
 
-/* 📝 TITLE */
 .card h3 {
     font-size: 14px;
 }
 
-/* 💰 PRICE */
 .price {
     font-weight: bold;
 }
 
-/* ❌ FAKE */
 .fake-text {
     color: #ef4444;
     font-weight: bold;
 }
 
-/* ✅ REAL */
 .real-text {
     color: #10b981;
     font-weight: bold;
 }
 
-/* 🔗 BUTTON */
 .card a {
     display: inline-block;
     margin-top: 10px;
@@ -150,7 +159,7 @@ body {
     text-decoration: none;
 }
 
-/* 🔄 LOADER SCREEN */
+/* 🔄 LOADER */
 .loader {
     display: none;
     position: fixed;
@@ -162,10 +171,8 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    z-index: 1000;
 }
 
-/* 🔄 SPINNER */
 .spinner {
     width: 50px;
     height: 50px;
@@ -175,13 +182,11 @@ body {
     animation: spin 1s linear infinite;
 }
 
-/* 🔄 ANIMATION */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-/* 📱 MOBILE RESPONSIVE */
+/* 📱 MOBILE */
 @media (max-width: 768px) {
     .card-container {
         grid-template-columns: 1fr;
