@@ -1,4 +1,4 @@
-/* 🔥 GLOBAL STYLING */
+/* 🔥 GLOBAL */
 body {
     background: #ffffff;
     color: #111827;
@@ -7,25 +7,48 @@ body {
     padding: 0;
 }
 
-/* 🔥 HERO SECTION */
+/* 🔥 NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-weight: 800;
+    color: #10b981;
+    font-size: 20px;
+}
+
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 500;
+}
+
+/* 🔥 HERO */
 .hero {
     text-align: center;
     padding: 50px 20px;
 }
 
-/* 🔥 MAIN TITLE */
+/* 🔥 TITLE */
 .hero-title {
     font-size: 3rem;
     font-weight: 800;
     line-height: 1.2;
 }
 
-/* 🔥 COLORED WORDS */
-.hero-title .fake {
+/* 🔥 COLORED TEXT */
+.fake {
     color: #ef4444;
 }
 
-.hero-title .buy {
+.buy {
     color: #10b981;
 }
 
@@ -36,7 +59,7 @@ body {
     color: #4b5563;
 }
 
-/* 🔍 SEARCH BOX */
+/* 🔍 SEARCH */
 .search-box {
     margin-top: 20px;
 }
@@ -46,6 +69,7 @@ body {
     width: 250px;
     border-radius: 20px;
     border: 1px solid #ccc;
+    outline: none;
 }
 
 .search-box button {
@@ -64,10 +88,10 @@ body {
     margin-top: 20px;
 }
 
-/* 🔥 IMPORTANT: HORIZONTAL GRID */
+/* 🔥 GRID (HORIZONTAL PRODUCTS) */
 .card-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* FORCE 4 CARDS IN ROW */
+    grid-template-columns: repeat(4, 1fr);
     gap: 25px;
     padding: 30px;
 }
@@ -79,37 +103,43 @@ body {
     padding: 20px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
 }
 
-/* IMAGE */
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* 🖼 IMAGE */
 .card img {
     width: 100%;
     height: 180px;
     object-fit: contain;
 }
 
-/* TITLE */
+/* 📝 TITLE */
 .card h3 {
     font-size: 14px;
 }
 
-/* PRICE */
+/* 💰 PRICE */
 .price {
     font-weight: bold;
 }
 
-/* FAKE / REAL */
+/* ❌ FAKE */
 .fake-text {
     color: #ef4444;
     font-weight: bold;
 }
 
+/* ✅ REAL */
 .real-text {
     color: #10b981;
     font-weight: bold;
 }
 
-/* BUTTON */
+/* 🔗 BUTTON */
 .card a {
     display: inline-block;
     margin-top: 10px;
@@ -118,4 +148,42 @@ body {
     color: white;
     border-radius: 8px;
     text-decoration: none;
+}
+
+/* 🔄 LOADER SCREEN */
+.loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.9);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+/* 🔄 SPINNER */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ddd;
+    border-top: 5px solid #10b981;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* 🔄 ANIMATION */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+    .card-container {
+        grid-template-columns: 1fr;
+    }
 }

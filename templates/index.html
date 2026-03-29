@@ -4,58 +4,79 @@
     <meta charset="UTF-8">
     <title>Fake Review Detector</title>
 
-    <!-- 🔥 Google Font -->
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
 
-    <!-- ✅ IMPORTANT: Correct Flask CSS linking -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <script>
+        function showLoader() {
+            document.getElementById("loader").style.display = "flex";
+        }
+    </script>
 </head>
 
 <body>
 
-    <!-- 🔥 HERO SECTION -->
-    <div class="hero">
+<!-- 🔥 NAVBAR -->
+<div class="navbar">
+    <h2 class="logo">TrustScan</h2>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">How it Works</a>
+        <a href="#">About</a>
+    </div>
+</div>
 
-        <h1 class="hero-title">
-            Detect <span class="fake">Fake</span> Reviews <br>
-            Before You <span class="buy">Buy</span> Anything
-        </h1>
+<!-- 🔥 HERO -->
+<div class="hero">
 
-        <p class="subtitle">
-            Search any product — our AI analyzes reviews and shows what's real and fake
-        </p>
+    <h1 class="hero-title">
+        Detect <span class="fake">Fake</span> Reviews <br>
+        Before You <span class="buy">Buy</span> Anything
+    </h1>
 
-        <!-- 🔍 SEARCH BOX -->
-        <form method="POST" class="search-box">
-            <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
-            <button type="submit">SCAN</button>
-        </form>
+    <p class="subtitle">
+        Search any product — our AI analyzes reviews and shows what's real and fake
+    </p>
+
+    <!-- 🔍 SEARCH -->
+    <form method="POST" class="search-box" onsubmit="showLoader()">
+        <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
+        <button type="submit">SCAN</button>
+    </form>
+
+</div>
+
+<!-- 🔄 LOADING SCREEN -->
+<div id="loader" class="loader">
+    <div class="spinner"></div>
+    <p>Analyzing reviews...</p>
+</div>
+
+<!-- 🛒 RESULTS -->
+{% if products %}
+<h2 class="results-title">Results for "{{ query }}"</h2>
+
+<div class="card-container">
+    {% for p in products %}
+    <div class="card">
+
+        <img src="{{ p.image }}" alt="product">
+
+        <h3>{{ p.title }}</h3>
+
+        <p class="price">{{ p.price }}</p>
+
+        <p class="fake-text">Fake: {{ p.fake }}%</p>
+        <p class="real-text">Real: {{ p.real }}%</p>
+
+        <a href="{{ p.link }}" target="_blank">View Product</a>
 
     </div>
-
-    <!-- 🛒 RESULTS -->
-    {% if products %}
-    <h2 class="results-title">Results for "{{ query }}"</h2>
-
-    <div class="card-container">
-        {% for p in products %}
-        <div class="card">
-
-            <img src="{{ p.image }}" alt="product">
-
-            <h3>{{ p.title }}</h3>
-
-            <p class="price">₹ {{ p.price }}</p>
-
-            <p class="fake-text">Fake: {{ p.fake }}%</p>
-            <p class="real-text">Real: {{ p.real }}%</p>
-
-            <a href="{{ p.link }}" target="_blank">View Product</a>
-
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
 
 </body>
 </html>
