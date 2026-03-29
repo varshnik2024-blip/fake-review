@@ -1,32 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Fake Review Detector</title>
+<meta charset="UTF-8">
+<title>Fake Review Detector</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
-    <script>
-        function showLoader() {
-            document.getElementById("loader").style.display = "flex";
-        }
+<script>
+function openModal(id) {
+    document.getElementById(id).style.display = "flex";
+}
 
-        function toggleSection(id) {
-            let section = document.getElementById(id);
+function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+</script>
 
-            // hide both first
-            document.getElementById("how").style.display = "none";
-            document.getElementById("about").style.display = "none";
-
-            // toggle selected
-            if (section.style.display === "block") {
-                section.style.display = "none";
-            } else {
-                section.style.display = "block";
-            }
-        }
-    </script>
 </head>
 
 <body>
@@ -36,52 +26,28 @@
     <h2 class="logo">TrustScan</h2>
     <div class="nav-links">
         <a href="#">Home</a>
-        <a href="#" onclick="toggleSection('how')">How it Works</a>
-        <a href="#" onclick="toggleSection('about')">About</a>
+        <a href="#" onclick="openModal('howModal')">How it Works</a>
+        <a href="#" onclick="openModal('aboutModal')">About</a>
     </div>
 </div>
 
 <!-- 🔥 HERO -->
 <div class="hero">
 
-    <h1 class="hero-title">
-        Detect <span class="fake">Fake</span> Reviews <br>
-        Before You <span class="buy">Buy</span> Anything
-    </h1>
+<h1 class="hero-title">
+    Detect <span class="fake">Fake</span> Reviews <br>
+    Before You <span class="buy">Buy</span> Anything
+</h1>
 
-    <p class="subtitle">
-        Search any product — our AI analyzes reviews and shows what's real and fake
-    </p>
+<p class="subtitle">
+    Search any product — our AI analyzes reviews and shows what's real and fake
+</p>
 
-    <form method="POST" class="search-box" onsubmit="showLoader()">
-        <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
-        <button type="submit">SCAN</button>
-    </form>
+<form method="POST" class="search-box">
+    <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
+    <button type="submit">SCAN</button>
+</form>
 
-</div>
-
-<!-- 🔄 LOADER -->
-<div id="loader" class="loader">
-    <div class="spinner"></div>
-    <p>Analyzing reviews...</p>
-</div>
-
-<!-- 🧠 HOW IT WORKS (HIDDEN) -->
-<div id="how" class="section" style="display:none;">
-    <h2>How it Works</h2>
-    <p>
-        Enter a product → We fetch real product data → 
-        Our system analyzes reviews → Shows fake vs real percentage.
-    </p>
-</div>
-
-<!-- 📘 ABOUT (HIDDEN) -->
-<div id="about" class="section" style="display:none;">
-    <h2>About</h2>
-    <p>
-        TrustScan helps users detect fake reviews before buying products online.
-        It improves decision making using smart analysis.
-    </p>
 </div>
 
 <!-- 🛒 RESULTS -->
@@ -89,24 +55,83 @@
 <h2 class="results-title">Results for "{{ query }}"</h2>
 
 <div class="card-container">
-    {% for p in products %}
-    <div class="card">
-
-        <img src="{{ p.image }}" alt="product">
-
-        <h3>{{ p.title }}</h3>
-
-        <p class="price">{{ p.price }}</p>
-
-        <p class="fake-text">Fake: {{ p.fake }}%</p>
-        <p class="real-text">Real: {{ p.real }}%</p>
-
-        <a href="{{ p.link }}" target="_blank">View Product</a>
-
-    </div>
-    {% endfor %}
+{% for p in products %}
+<div class="card">
+    <img src="{{ p.image }}">
+    <h3>{{ p.title }}</h3>
+    <p class="price">{{ p.price }}</p>
+    <p class="fake-text">Fake: {{ p.fake }}%</p>
+    <p class="real-text">Real: {{ p.real }}%</p>
+    <a href="{{ p.link }}" target="_blank">View Product</a>
+</div>
+{% endfor %}
 </div>
 {% endif %}
+
+<!-- 🔥 HOW IT WORKS MODAL -->
+<div id="howModal" class="modal">
+<div class="modal-box">
+
+<span class="close" onclick="closeModal('howModal')">&times;</span>
+
+<h2>How TrustScan Works</h2>
+
+<p>
+🔍 Step 1: Enter any product name (like phone, laptop, etc.)
+</p>
+
+<p>
+🌐 Step 2: We fetch real-time product data using SerpAPI
+</p>
+
+<p>
+🤖 Step 3: Our AI analyzes reviews & patterns
+</p>
+
+<p>
+📊 Step 4: It estimates Fake vs Real review percentage
+</p>
+
+<p>
+⚡ Step 5: You get instant results to make better decisions
+</p>
+
+</div>
+</div>
+
+<!-- 🔥 ABOUT MODAL -->
+<div id="aboutModal" class="modal">
+<div class="modal-box">
+
+<span class="close" onclick="closeModal('aboutModal')">&times;</span>
+
+<h2>About TrustScan</h2>
+
+<p>
+TrustScan is an AI-powered web application designed to help users identify fake reviews before purchasing products online.
+</p>
+
+<p>
+🚀 Built using:
+- Flask (Backend)
+- SerpAPI (Data fetching)
+- HTML, CSS (Frontend)
+</p>
+
+<p>
+🎯 Goal:
+To improve online shopping decisions by providing transparency.
+</p>
+
+<p>
+💡 Future Scope:
+- Real ML model for accuracy  
+- Chrome extension  
+- Mobile app version  
+</p>
+
+</div>
+</div>
 
 </body>
 </html>
