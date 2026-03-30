@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request
 import requests
 import random
+import os
 
 app = Flask(__name__)
 
-# 🔴 PASTE YOUR API KEY HERE
-import os
+# 🔐 GET API KEY FROM ENV
 API_KEY = os.environ.get("API_KEY")
 
 
@@ -16,23 +16,24 @@ def get_products(query):
         "engine": "amazon",
         "k": query,
         "amazon_domain": "amazon.in",
-        "api_key": API_KEY
+        "api_key": API_KEY,
+        "num": 20   # 🔥 GET UP TO 20 PRODUCTS
     }
 
     response = requests.get(url, params=params)
     data = response.json()
 
-    print("FULL RESPONSE:", data)  # 🔍 DEBUG
+    print("FULL RESPONSE:", data)  # DEBUG
 
     products = []
 
-    # ✅ HANDLE BOTH POSSIBLE KEYS
+    # HANDLE DIFFERENT POSSIBLE KEYS
     results = data.get("shopping_results") or data.get("organic_results") or []
 
-    for item in results[:6]:
+    # 🔥 SHOW UP TO 20 PRODUCTS
+    for item in results[:20]:
         title = item.get("title", "No Title")
 
-        # 🔥 IMAGE FIX (IMPORTANT)
         image = (
             item.get("thumbnail")
             or item.get("image")
@@ -44,6 +45,7 @@ def get_products(query):
 
         price = item.get("price") or item.get("extracted_price") or "N/A"
 
+        # RANDOM FAKE/REAL (for demo)
         fake = random.randint(10, 30)
         real = 100 - fake
 
@@ -56,7 +58,7 @@ def get_products(query):
             "real": real
         })
 
-    print("FINAL PRODUCTS:", products)  # 🔍 DEBUG
+    print("FINAL PRODUCTS:", products)  # DEBUG
 
     return products
 
@@ -75,5 +77,6 @@ def home():
     return render_template("index.html", products=products, query=query)
 
 
+# 🔥 IMPORTANT FOR RENDER DEPLOYMENT
 if __name__ == "__main__":
     app.run(debug=True)
