@@ -12,9 +12,8 @@ def get_products(query):
     url = "https://serpapi.com/search.json"
 
     products = []
-    seen_links = set()   # 🔥 avoid duplicates
+    seen_links = set()
 
-    # 🔥 try multiple pages
     for start in [0, 20, 40]:
 
         params = {
@@ -34,7 +33,6 @@ def get_products(query):
         for item in results:
             link = item.get("link")
 
-            # 🔥 skip duplicates
             if not link or link in seen_links:
                 continue
 
@@ -51,6 +49,9 @@ def get_products(query):
 
             price = item.get("price") or item.get("extracted_price") or "N/A"
 
+            # ⭐ GET RATING (IMPORTANT)
+            rating = item.get("rating") or 0
+
             fake = random.randint(10, 30)
             real = 100 - fake
 
@@ -59,11 +60,15 @@ def get_products(query):
                 "image": image,
                 "link": link,
                 "price": price,
+                "rating": rating,
                 "fake": fake,
                 "real": real
             })
 
-    return products[:50]   # 🔥 max 50
+    # 🔥 SORT BY RATING (HIGH → LOW)
+    products = sorted(products, key=lambda x: x["rating"], reverse=True)
+
+    return products[:50]
 
 
 @app.route("/", methods=["GET", "POST"])
