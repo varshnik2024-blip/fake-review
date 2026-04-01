@@ -11,10 +11,16 @@
 <!-- 🔷 NAVBAR -->
 <nav class="navbar">
     <h2 class="logo">TrustScan</h2>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#" onclick="openPopup('how')">How it Works</a></li>
+        <li><a href="#" onclick="openPopup('about')">About</a></li>
+    </ul>
 </nav>
 
 <!-- 🔷 HERO -->
-<div class="hero">
+<div id="home" class="hero">
     <h1 class="hero-title">
         Detect <span class="fake">Fake</span> Reviews <br>
         Before You <span class="buy">Buy</span> Anything
@@ -35,47 +41,107 @@
 <h2 class="results-title">Results for "{{ query }}"</h2>
 
 <div class="products">
+{% for p in products %}
+<div class="card">
 
-    {% for p in products %}
-    <div class="card">
+    <img src="{{ p.image }}">
 
-        <img src="{{ p.image }}" alt="product">
+    <h3>{{ p.title }}</h3>
 
-        <h3>{{ p.title }}</h3>
+    <p>₹{{ p.price }}</p>
 
-        <p class="price">₹{{ p.price }}</p>
+    <!-- ⭐ STARS -->
+    <div class="stars">
+        {% set full = p.rating|int %}
+        {% set half = 1 if p.rating - full >= 0.5 else 0 %}
+        {% set empty = 5 - full - half %}
 
-        <!-- ⭐ STAR RATING -->
-        <div class="stars">
-            {% set full = p.rating|int %}
-            {% set half = 1 if p.rating - full >= 0.5 else 0 %}
-            {% set empty = 5 - full - half %}
+        {% for i in range(full) %}
+        <span class="star full">★</span>
+        {% endfor %}
 
-            {% for i in range(full) %}
-                <span class="star full">★</span>
-            {% endfor %}
+        {% if half %}
+        <span class="star half">★</span>
+        {% endif %}
 
-            {% if half %}
-                <span class="star half">★</span>
-            {% endif %}
-
-            {% for i in range(empty) %}
-                <span class="star empty">★</span>
-            {% endfor %}
-
-            <span class="rating-number">{{ p.rating }}</span>
-        </div>
-
-        <p class="fake">Fake: {{ p.fake }}%</p>
-        <p class="real">Real: {{ p.real }}%</p>
-
-        <a href="{{ p.link }}" target="_blank">View Product</a>
-
+        {% for i in range(empty) %}
+        <span class="star empty">★</span>
+        {% endfor %}
     </div>
-    {% endfor %}
+
+    <p class="fake">Fake: {{ p.fake }}%</p>
+    <p class="real">Real: {{ p.real }}%</p>
+
+    <a href="{{ p.link }}" target="_blank">View Product</a>
 
 </div>
+{% endfor %}
+</div>
 {% endif %}
+
+<!-- 🔥 POPUP -->
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()">×</span>
+
+        <div id="popup-body"></div>
+
+    </div>
+</div>
+
+<!-- 🔥 SCRIPT -->
+<script>
+function openPopup(type) {
+    let content = "";
+
+    if(type === "how") {
+        content = `
+        <h2>How it Works</h2>
+
+        <div class="popup-grid">
+
+            <div class="box">
+                <h3>🔍 Enter a product</h3>
+                <p>Type any product name or keyword</p>
+            </div>
+
+            <div class="box">
+                <h3>🌐 Live data fetch</h3>
+                <p>We collect product details from online sources</p>
+            </div>
+
+            <div class="box">
+                <h3>📊 Smart analysis</h3>
+                <p>Review patterns and ratings are analyzed</p>
+            </div>
+
+            <div class="box">
+                <h3>⚡ Instant result</h3>
+                <p>Fake vs Real percentage is shown instantly</p>
+            </div>
+
+        </div>
+        `;
+    }
+
+    if(type === "about") {
+        content = `
+        <h2>About</h2>
+        <p>
+        TrustScan helps users identify fake reviews before buying products online.
+        It improves decision making by analyzing ratings and review patterns.
+        </p>
+        `;
+    }
+
+    document.getElementById("popup-body").innerHTML = content;
+    document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+</script>
 
 </body>
 </html>
