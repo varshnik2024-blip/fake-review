@@ -1,137 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TrustScan</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
-<script>
-function openModal(id) {
-    document.getElementById(id).style.display = "flex";
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-}
-</script>
-
+    <meta charset="UTF-8">
+    <title>TrustScan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
 
-<!-- 🔥 NAVBAR -->
-<div class="navbar">
+<!-- 🔷 NAVBAR -->
+<nav class="navbar">
     <h2 class="logo">TrustScan</h2>
-    <div class="nav-links">
-        <a href="#">Home</a>
-        <a onclick="openModal('howModal')">How it Works</a>
-        <a onclick="openModal('aboutModal')">About</a>
-    </div>
-</div>
+</nav>
 
-<!-- 🔥 HERO -->
+<!-- 🔷 HERO -->
 <div class="hero">
+    <h1 class="hero-title">
+        Detect <span class="fake">Fake</span> Reviews <br>
+        Before You <span class="buy">Buy</span> Anything
+    </h1>
 
-<h1 class="hero-title">
-    Detect <span class="fake">Fake</span> Reviews <br>
-    Before You <span class="buy">Buy</span> Anything
-</h1>
+    <p class="subtitle">
+        Search any product — our system analyzes reviews and shows what's real and fake
+    </p>
 
-<p class="subtitle">
-    Search any product — our system analyzes review patterns and tells you what's real
-</p>
-
-<form method="POST" class="search-box">
-    <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
-    <button type="submit">SCAN</button>
-</form>
-
+    <form method="POST">
+        <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
+        <button type="submit">SCAN</button>
+    </form>
 </div>
 
-<!-- 🛒 RESULTS -->
+<!-- 🔷 RESULTS -->
 {% if products %}
 <h2 class="results-title">Results for "{{ query }}"</h2>
 
-<div class="card-container">
-{% for p in products %}
-<div class="card">
+<div class="products">
 
-    <img src="{{ p.image }}">
+    {% for p in products %}
+    <div class="card">
 
-    <h3>{{ p.title }}</h3>
+        <img src="{{ p.image }}" alt="product">
 
-    <p class="price">{{ p.price }}</p>
+        <h3>{{ p.title }}</h3>
 
-    <!-- ⭐ RATING DISPLAY -->
-    <p>⭐ {{ p.rating }}</p>
+        <p class="price">₹{{ p.price }}</p>
 
-    <p class="fake-text">Fake: {{ p.fake }}%</p>
-    <p class="real-text">Real: {{ p.real }}%</p>
+        <!-- ⭐ STAR RATING -->
+        <div class="stars">
+            {% set full = p.rating|int %}
+            {% set half = 1 if p.rating - full >= 0.5 else 0 %}
+            {% set empty = 5 - full - half %}
 
-    <a href="{{ p.link }}" target="_blank">View Product</a>
+            {% for i in range(full) %}
+                <span class="star full">★</span>
+            {% endfor %}
 
-</div>
-{% endfor %}
+            {% if half %}
+                <span class="star half">★</span>
+            {% endif %}
+
+            {% for i in range(empty) %}
+                <span class="star empty">★</span>
+            {% endfor %}
+
+            <span class="rating-number">{{ p.rating }}</span>
+        </div>
+
+        <p class="fake">Fake: {{ p.fake }}%</p>
+        <p class="real">Real: {{ p.real }}%</p>
+
+        <a href="{{ p.link }}" target="_blank">View Product</a>
+
+    </div>
+    {% endfor %}
+
 </div>
 {% endif %}
-
-<!-- 🔥 HOW IT WORKS MODAL -->
-<div id="howModal" class="modal">
-<div class="modal-box big-modal">
-
-<span class="close" onclick="closeModal('howModal')">&times;</span>
-
-<h2 class="modal-title">How it works</h2>
-
-<div class="steps-grid">
-
-<div class="step-card">
-<h3>🔍 Enter a product</h3>
-<p>Type any product name or keyword to begin</p>
-</div>
-
-<div class="step-card">
-<h3>🌐 Real-time fetch</h3>
-<p>We pull live product data using SerpAPI</p>
-</div>
-
-<div class="step-card">
-<h3>🧠 Smart Analysis</h3>
-<p>Review patterns, language & behavior are analyzed</p>
-</div>
-
-<div class="step-card">
-<h3>📊 Instant verdict</h3>
-<p>Get real vs fake percentage instantly</p>
-</div>
-
-</div>
-
-</div>
-</div>
-
-<!-- 🔥 ABOUT MODAL -->
-<div id="aboutModal" class="modal">
-<div class="modal-box">
-
-<span class="close" onclick="closeModal('aboutModal')">&times;</span>
-
-<h2>About TrustScan</h2>
-
-<p>
-TrustScan helps users detect fake reviews before buying products online.
-</p>
-
-<p>
-🚀 Built with Flask, SerpAPI, HTML, CSS  
-🎯 Helps users make smarter decisions  
-💡 Future: ML model integration
-</p>
-
-</div>
-</div>
 
 </body>
 </html>
