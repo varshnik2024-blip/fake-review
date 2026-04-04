@@ -155,14 +155,7 @@ function closeAbout() {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDU9tRoJnYxgYOVYYJ5hp01WlPc8bNBhFA",
-  authDomain: "trustscan-bba50.firebaseapp.com",
-  projectId: "trustscan-bba50",
-  storageBucket: "trustscan-bba50.firebasestorage.app",
-  messagingSenderId: "602446002339",
-  appId: "1:602446002339:web:aadbaa1a38e6764d126716"
-};
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
