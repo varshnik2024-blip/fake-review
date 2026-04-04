@@ -1,190 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrustScan</title>
-
-<link rel="stylesheet" href="/static/styles.css">
-
-<style>
-.hidden { display: none; }
-</style>
-
+    <meta charset="UTF-8">
+    <title>TrustScan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
 
-<!-- 🔐 LOGIN SCREEN -->
-<div id="login-box" style="text-align:center; margin-top:100px;">
-    <h2>Login with Phone</h2>
-
-    <input type="text" id="phone" placeholder="+91XXXXXXXXXX"><br><br>
-    <button id="send-otp-btn" onclick="sendOTP()">Send OTP</button><br><br>
-
-    <input type="text" id="otp" placeholder="Enter OTP"><br><br>
-    <button onclick="verifyOTP()">Verify OTP</button>
-</div>
-
-<!-- 🌐 MAIN WEBSITE (HIDDEN BEFORE LOGIN) -->
-<div id="main-site" class="hidden">
-
-<!-- NAVBAR -->
+<!-- 🔷 NAVBAR -->
 <nav class="navbar">
     <h2 class="logo">TrustScan</h2>
+
     <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#" onclick="openModal()">How it Works</a></li>
-        <li><a href="#" onclick="openAbout()">About</a></li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#" onclick="openPopup('how')">How it Works</a></li>
+        <li><a href="#" onclick="openPopup('about')">About</a></li>
     </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-    <h1>
-        Detect <span style="color:red;">Fake</span> Reviews <br>
-        Before You <span style="color:green;">Buy</span> Anything
+<!-- 🔷 HERO -->
+<div id="home" class="hero">
+    <h1 class="hero-title">
+        Detect <span class="fake">Fake</span> Reviews <br>
+        Before You <span class="buy">Buy</span> Anything
     </h1>
 
+    <p class="subtitle">
+        Search any product — our system analyzes reviews and shows what's real and fake
+    </p>
+
     <form method="POST">
-        <input type="text" name="product" placeholder="Search product..." required>
+        <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
         <button type="submit">SCAN</button>
     </form>
-</section>
+</div>
 
-<!-- RESULTS -->
+<!-- 🔷 RESULTS -->
 {% if products %}
-<h2 class="result-title">Results for "{{ query }}"</h2>
+<h2 class="results-title">Results for "{{ query }}"</h2>
 
-<div class="product-grid">
-    {% for product in products %}
-    <div class="card">
-        <img src="{{ product.image }}" alt="product">
+<div class="products">
+{% for p in products %}
+<div class="card">
 
-        <h3>{{ product.name }}</h3>
+    <img src="{{ p.image }}">
 
-        <p>₹{{ product.price }}</p>
+    <h3>{{ p.title }}</h3>
 
-        <!-- ⭐ Stars -->
-        <div class="stars">
-            {% for i in range(1,6) %}
-                {% if product.rating >= i %}
-                    <span class="star full">★</span>
-                {% elif product.rating >= i-0.5 %}
-                    <span class="star half">★</span>
-                {% else %}
-                    <span class="star empty">★</span>
-                {% endif %}
-            {% endfor %}
-            ({{ product.rating }})
-        </div>
+    <p>₹{{ p.price }}</p>
 
-        <p>Fake: {{ product.fake }}%</p>
-        <p>Real: {{ product.real }}%</p>
+    <!-- ⭐ STARS -->
+    <div class="stars">
+        {% set full = p.rating|int %}
+        {% set half = 1 if p.rating - full >= 0.5 else 0 %}
+        {% set empty = 5 - full - half %}
 
-        <a href="{{ product.link }}" target="_blank">View Product</a>
+        {% for i in range(full) %}
+        <span class="star full">★</span>
+        {% endfor %}
+
+        {% if half %}
+        <span class="star half">★</span>
+        {% endif %}
+
+        {% for i in range(empty) %}
+        <span class="star empty">★</span>
+        {% endfor %}
     </div>
-    {% endfor %}
+
+    <p class="fake">Fake: {{ p.fake }}%</p>
+    <p class="real">Real: {{ p.real }}%</p>
+
+    <a href="{{ p.link }}" target="_blank">View Product</a>
+
+</div>
+{% endfor %}
 </div>
 {% endif %}
 
-</div>
+<!-- 🔥 POPUP -->
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()">×</span>
 
-<!-- 🔵 HOW IT WORKS MODAL -->
-<div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <span onclick="closeModal()" class="close">&times;</span>
+        <div id="popup-body"></div>
 
-    <h2>How it Works</h2>
-
-    <div class="modal-grid">
-        <div class="box">
-            <h3>🔍 Enter a product</h3>
-            <p>Type product name or keyword</p>
-        </div>
-
-        <div class="box">
-            <h3>🌐 Real-time fetch</h3>
-            <p>We collect live product data</p>
-        </div>
-
-        <div class="box">
-            <h3>📊 Review analysis</h3>
-            <p>Patterns & behavior are analyzed</p>
-        </div>
-
-        <div class="box">
-            <h3>📈 Instant result</h3>
-            <p>Fake vs Real percentage shown</p>
-        </div>
     </div>
-  </div>
 </div>
 
-<!-- 🟢 ABOUT MODAL -->
-<div id="aboutModal" class="modal hidden">
-  <div class="modal-content">
-    <span onclick="closeAbout()" class="close">&times;</span>
-
-    <h2>About</h2>
-    <p>
-        TrustScan helps users identify fake reviews before purchasing products.
-        It improves decision making using smart analysis and real-time data.
-    </p>
-  </div>
-</div>
-
-<!-- 🔧 MODAL SCRIPT -->
+<!-- 🔥 SCRIPT -->
 <script>
-function openModal() {
-    document.getElementById("modal").classList.remove("hidden");
+function openPopup(type) {
+    let content = "";
+
+    if(type === "how") {
+        content = `
+        <h2>How it Works</h2>
+
+        <div class="popup-grid">
+
+            <div class="box">
+                <h3>🔍 Enter a product</h3>
+                <p>Type any product name or keyword</p>
+            </div>
+
+            <div class="box">
+                <h3>🌐 Live data fetch</h3>
+                <p>We collect product details from online sources</p>
+            </div>
+
+            <div class="box">
+                <h3>📊 Smart analysis</h3>
+                <p>Review patterns and ratings are analyzed</p>
+            </div>
+
+            <div class="box">
+                <h3>⚡ Instant result</h3>
+                <p>Fake vs Real percentage is shown instantly</p>
+            </div>
+
+        </div>
+        `;
+    }
+
+    if(type === "about") {
+        content = `
+        <h2>About</h2>
+        <p>
+        TrustScan helps users identify fake reviews before buying products online.
+        It improves decision making by analyzing ratings and review patterns.
+        </p>
+        `;
+    }
+
+    document.getElementById("popup-body").innerHTML = content;
+    document.getElementById("popup").style.display = "flex";
 }
-function closeModal() {
-    document.getElementById("modal").classList.add("hidden");
-}
-function openAbout() {
-    document.getElementById("aboutModal").classList.remove("hidden");
-}
-function closeAbout() {
-    document.getElementById("aboutModal").classList.add("hidden");
-}
-</script>
 
-<!-- 🔥 FIREBASE (DO NOT CHANGE) -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-window.recaptchaVerifier = new RecaptchaVerifier(auth, 'send-otp-btn', {
-    'size': 'invisible'
-});
-
-window.sendOTP = function() {
-    const phone = document.getElementById("phone").value;
-
-    signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
-    .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
-        alert("OTP sent!");
-    })
-    .catch((error) => alert(error.message));
-}
-
-window.verifyOTP = function() {
-    const code = document.getElementById("otp").value;
-
-    window.confirmationResult.confirm(code)
-    .then((result) => {
-        alert("Login successful!");
-        document.getElementById("login-box").style.display = "none";
-        document.getElementById("main-site").classList.remove("hidden");
-    })
-    .catch(() => alert("Invalid OTP"));
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
 }
 </script>
 
