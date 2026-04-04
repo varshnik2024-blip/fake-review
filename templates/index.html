@@ -5,65 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrustScan</title>
 
+<link rel="stylesheet" href="/static/styles.css">
+
 <style>
-body {
-    font-family: Arial;
-    text-align: center;
-    background: #f5f5f5;
-}
-
 .hidden { display: none; }
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 40px;
-    background: white;
-}
-
-.logo { color: green; }
-
-.hero { margin-top: 50px; }
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.card {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-}
-
-.star.full { color: gold; }
-.star.half { color: gold; opacity: 0.5; }
-.star.empty { color: lightgray; }
-
-.modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background: white;
-    margin: 10% auto;
-    padding: 20px;
-    width: 60%;
-    border-radius: 10px;
-}
 </style>
 
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="login-box">
+<!-- 🔐 LOGIN SCREEN -->
+<div id="login-box" style="text-align:center; margin-top:100px;">
     <h2>Login with Phone</h2>
 
     <input type="text" id="phone" placeholder="+91XXXXXXXXXX"><br><br>
@@ -73,40 +26,115 @@ body {
     <button onclick="verifyOTP()">Verify OTP</button>
 </div>
 
-<!-- MAIN SITE -->
+<!-- 🌐 MAIN WEBSITE (HIDDEN BEFORE LOGIN) -->
 <div id="main-site" class="hidden">
 
-<div class="navbar">
+<!-- NAVBAR -->
+<nav class="navbar">
     <h2 class="logo">TrustScan</h2>
-    <div>
-        <button onclick="openModal()">How it Works</button>
-        <button onclick="openAbout()">About</button>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#" onclick="openModal()">How it Works</a></li>
+        <li><a href="#" onclick="openAbout()">About</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>
+        Detect <span style="color:red;">Fake</span> Reviews <br>
+        Before You <span style="color:green;">Buy</span> Anything
+    </h1>
+
+    <form method="POST">
+        <input type="text" name="product" placeholder="Search product..." required>
+        <button type="submit">SCAN</button>
+    </form>
+</section>
+
+<!-- RESULTS -->
+{% if products %}
+<h2 class="result-title">Results for "{{ query }}"</h2>
+
+<div class="product-grid">
+    {% for product in products %}
+    <div class="card">
+        <img src="{{ product.image }}" alt="product">
+
+        <h3>{{ product.name }}</h3>
+
+        <p>₹{{ product.price }}</p>
+
+        <!-- ⭐ Stars -->
+        <div class="stars">
+            {% for i in range(1,6) %}
+                {% if product.rating >= i %}
+                    <span class="star full">★</span>
+                {% elif product.rating >= i-0.5 %}
+                    <span class="star half">★</span>
+                {% else %}
+                    <span class="star empty">★</span>
+                {% endif %}
+            {% endfor %}
+            ({{ product.rating }})
+        </div>
+
+        <p>Fake: {{ product.fake }}%</p>
+        <p>Real: {{ product.real }}%</p>
+
+        <a href="{{ product.link }}" target="_blank">View Product</a>
     </div>
+    {% endfor %}
 </div>
-
-<div class="hero">
-    <h1>Detect <span style="color:red;">Fake</span> Reviews</h1>
-</div>
+{% endif %}
 
 </div>
 
-<!-- MODAL -->
+<!-- 🔵 HOW IT WORKS MODAL -->
 <div id="modal" class="modal hidden">
   <div class="modal-content">
-    <button onclick="closeModal()">Close</button>
+    <span onclick="closeModal()" class="close">&times;</span>
+
     <h2>How it Works</h2>
-    <p>Enter product → Fetch data → Analyze → Show result</p>
+
+    <div class="modal-grid">
+        <div class="box">
+            <h3>🔍 Enter a product</h3>
+            <p>Type product name or keyword</p>
+        </div>
+
+        <div class="box">
+            <h3>🌐 Real-time fetch</h3>
+            <p>We collect live product data</p>
+        </div>
+
+        <div class="box">
+            <h3>📊 Review analysis</h3>
+            <p>Patterns & behavior are analyzed</p>
+        </div>
+
+        <div class="box">
+            <h3>📈 Instant result</h3>
+            <p>Fake vs Real percentage shown</p>
+        </div>
+    </div>
   </div>
 </div>
 
+<!-- 🟢 ABOUT MODAL -->
 <div id="aboutModal" class="modal hidden">
   <div class="modal-content">
-    <button onclick="closeAbout()">Close</button>
+    <span onclick="closeAbout()" class="close">&times;</span>
+
     <h2>About</h2>
-    <p>TrustScan detects fake reviews before buying.</p>
+    <p>
+        TrustScan helps users identify fake reviews before purchasing products.
+        It improves decision making using smart analysis and real-time data.
+    </p>
   </div>
 </div>
 
+<!-- 🔧 MODAL SCRIPT -->
 <script>
 function openModal() {
     document.getElementById("modal").classList.remove("hidden");
@@ -122,25 +150,19 @@ function closeAbout() {
 }
 </script>
 
-<!-- 🔥 FIREBASE FINAL FIX -->
+<!-- 🔥 FIREBASE (DO NOT CHANGE) -->
 <script type="module">
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDU9tRoJnYxgYOVYYJ5hp01WlPc8bNBhFA",
   authDomain: "trustscan-bba50.firebaseapp.com",
   projectId: "trustscan-bba50",
   storageBucket: "trustscan-bba50.firebasestorage.app",
   messagingSenderId: "602446002339",
-  appId: "1:602446002339:web:ad2a2fba44784248126716"
+  appId: "1:602446002339:web:aadbaa1a38e6764d126716"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -157,17 +179,15 @@ window.sendOTP = function() {
         window.confirmationResult = confirmationResult;
         alert("OTP sent!");
     })
-    .catch((error) => {
-        alert(error.message);
-    });
+    .catch((error) => alert(error.message));
 }
 
 window.verifyOTP = function() {
     const code = document.getElementById("otp").value;
 
     window.confirmationResult.confirm(code)
-    .then(() => {
-        alert("Login success");
+    .then((result) => {
+        alert("Login successful!");
         document.getElementById("login-box").style.display = "none";
         document.getElementById("main-site").classList.remove("hidden");
     })
