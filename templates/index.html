@@ -67,14 +67,14 @@
                 });
         };
 
-        // LOGIN
+        // LOGIN + REDIRECT
         window.login = function () {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    document.getElementById("message").innerText = "Login Successful ✅";
+                    window.location.href = "/home";
                 })
                 .catch((error) => {
                     document.getElementById("message").innerText = error.message;

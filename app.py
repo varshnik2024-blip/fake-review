@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import requests
 import random
 import os
@@ -6,6 +6,9 @@ import os
 app = Flask(__name__)
 
 API_KEY = os.environ.get("API_KEY")
+
+# 🔐 SIMPLE USER STORAGE (for login)
+users = {}
 
 
 def get_products(query):
@@ -49,7 +52,6 @@ def get_products(query):
 
             price = item.get("price") or item.get("extracted_price") or "N/A"
 
-            # ⭐ GET RATING (IMPORTANT)
             rating = item.get("rating") or 0
 
             fake = random.randint(10, 30)
@@ -65,14 +67,42 @@ def get_products(query):
                 "real": real
             })
 
-    # 🔥 SORT BY RATING (HIGH → LOW)
     products = sorted(products, key=lambda x: x["rating"], reverse=True)
 
     return products[:50]
 
 
+# 🔐 LOGIN PAGE
 @app.route("/", methods=["GET", "POST"])
-def home():
+def login():
+    return render_template("login.html")
+
+
+# 🔐 SIGNUP
+@app.route("/signup", methods=["POST"])
+def signup():
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    users[email] = password
+    return redirect(url_for("website"))
+
+
+# 🔐 LOGIN CHECK
+@app.route("/login", methods=["POST"])
+def login_user():
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    if email in users and users[email] == password:
+        return redirect(url_for("website"))
+    else:
+        return "Invalid Login ❌"
+
+
+# 🌐 YOUR ORIGINAL WEBSITE (UNCHANGED)
+@app.route("/home", methods=["GET", "POST"])
+def website():
     products = []
     query = ""
 
