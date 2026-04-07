@@ -27,7 +27,6 @@ body {
     z-index: 1000;
 }
 
-/* LOGO */
 .logo {
     position: absolute;
     left: 20px;
@@ -38,7 +37,6 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-/* NAV */
 .topbar {
     position: absolute;
     right: 30px;
@@ -46,9 +44,8 @@ body {
 
 .topbar a {
     margin-left: 20px;
-    cursor: pointer;
     text-decoration: none;
-    color: #374151; /* dark grey */
+    color: #374151;
     font-weight: 500;
 }
 
@@ -61,7 +58,6 @@ body {
     margin-top: 70px;
 }
 
-/* CATEGORY BOX (ALL SAME) */
 .sidebar a {
     display: block;
     padding: 10px;
@@ -69,8 +65,14 @@ body {
     border-radius: 10px;
     text-decoration: none;
     background: white;
-    color: #374151; /* dark grey text */
+    color: #374151;
     font-weight: 600;
+}
+
+/* ⭐ ACTIVE CATEGORY */
+.sidebar a.active {
+    background: #10b981;
+    color: white;
 }
 
 .sidebar a:hover {
@@ -83,7 +85,6 @@ body {
     padding: 100px 40px;
 }
 
-/* HERO */
 .hero {
     text-align: center;
 }
@@ -97,7 +98,6 @@ body {
 .fake { color: red; }
 .buy { color: green; }
 
-/* SEARCH */
 .search-box {
     margin-top: 25px;
 }
@@ -107,7 +107,6 @@ input {
     width: 300px;
     border-radius: 25px;
     border: 1px solid #ccc;
-    color: #374151;
 }
 
 button {
@@ -118,7 +117,6 @@ button {
     border: none;
 }
 
-/* SUGGESTIONS */
 .suggestions {
     margin-top: 15px;
     display: flex;
@@ -146,7 +144,6 @@ button {
     padding: 15px;
     border-radius: 10px;
     text-align: center;
-    color: #374151;
 }
 
 img {
@@ -159,7 +156,6 @@ img {
     color: gold;
 }
 
-/* FAKE / GENUINE */
 .fake-text { color: red; font-weight:600;}
 .real-text { color: green; font-weight:600;}
 
@@ -176,14 +172,11 @@ img {
 .modal {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
     width:100%;
     height:100%;
     background: rgba(0,0,0,0.4);
     justify-content:center;
     align-items:center;
-    z-index:2000;
 }
 
 .modal-box {
@@ -191,7 +184,6 @@ img {
     padding:25px;
     border-radius:12px;
     width:400px;
-    color:#374151;
 }
 </style>
 
@@ -201,11 +193,11 @@ function openModal(type){
 
     if(type==="about"){
         document.getElementById("modalContent").innerHTML =
-        "<h3>About TrustScan</h3><p>TrustScan helps users identify genuine vs fake reviews so they can make smarter purchasing decisions.</p>";
+        "<h3>About TrustScan</h3><p>TrustScan helps users identify genuine vs fake reviews.</p>";
     }
     else{
         document.getElementById("modalContent").innerHTML =
-        "<h3>How it works</h3><p>Our system analyzes large volumes of product reviews, detects unusual patterns, repeated phrases, and spam behavior to estimate fake vs genuine reviews.</p>";
+        "<h3>How it works</h3><p>We analyze product reviews and detect fake vs genuine patterns.</p>";
     }
 }
 
@@ -232,15 +224,16 @@ function closeModal(){
 <!-- SIDEBAR -->
 <div class="sidebar">
     <h3 style="color:#374151;">Categories</h3>
-    <a href="/?category=electronics">Electronics</a>
-    <a href="/?category=home">Home & Kitchen</a>
-    <a href="/?category=jewellery">Jewellery</a>
-    <a href="/?category=men">Men</a>
-    <a href="/?category=women">Women</a>
-    <a href="/?category=kids">Kids</a>
-    <a href="/?category=cosmetics">Cosmetics</a>
-    <a href="/?category=toys">Toys</a>
-    <a href="/?category=carry">Carry Essentials</a>
+
+    <a href="/?category=electronics" class="{% if category=='electronics' %}active{% endif %}">Electronics</a>
+    <a href="/?category=home" class="{% if category=='home' %}active{% endif %}">Home & Kitchen</a>
+    <a href="/?category=jewellery" class="{% if category=='jewellery' %}active{% endif %}">Jewellery</a>
+    <a href="/?category=men" class="{% if category=='men' %}active{% endif %}">Men</a>
+    <a href="/?category=women" class="{% if category=='women' %}active{% endif %}">Women</a>
+    <a href="/?category=kids" class="{% if category=='kids' %}active{% endif %}">Kids</a>
+    <a href="/?category=cosmetics" class="{% if category=='cosmetics' %}active{% endif %}">Cosmetics</a>
+    <a href="/?category=toys" class="{% if category=='toys' %}active{% endif %}">Toys</a>
+    <a href="/?category=carry" class="{% if category=='carry' %}active{% endif %}">Carry Essentials</a>
 </div>
 
 <!-- MAIN -->
