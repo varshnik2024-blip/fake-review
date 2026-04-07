@@ -48,7 +48,7 @@ body {
     margin-left: 20px;
     cursor: pointer;
     text-decoration: none;
-    color: #111;
+    color: #374151; /* dark grey */
     font-weight: 500;
 }
 
@@ -61,7 +61,7 @@ body {
     margin-top: 70px;
 }
 
-/* CATEGORY BOX (WHITE ONLY) */
+/* CATEGORY BOX (ALL SAME) */
 .sidebar a {
     display: block;
     padding: 10px;
@@ -69,19 +69,9 @@ body {
     border-radius: 10px;
     text-decoration: none;
     background: white;
+    color: #374151; /* dark grey text */
     font-weight: 600;
 }
-
-/* 🎨 COLORFUL TEXT */
-.sidebar a:nth-child(2){color:#3b82f6;}
-.sidebar a:nth-child(3){color:#10b981;}
-.sidebar a:nth-child(4){color:#f59e0b;}
-.sidebar a:nth-child(5){color:#ef4444;}
-.sidebar a:nth-child(6){color:#8b5cf6;}
-.sidebar a:nth-child(7){color:#ec4899;}
-.sidebar a:nth-child(8){color:#06b6d4;}
-.sidebar a:nth-child(9){color:#84cc16;}
-.sidebar a:nth-child(10){color:#6366f1;}
 
 .sidebar a:hover {
     background: #e5e7eb;
@@ -101,6 +91,7 @@ body {
 .hero-title {
     font-size: 2.5rem;
     font-weight: 800;
+    color: #374151;
 }
 
 .fake { color: red; }
@@ -116,6 +107,7 @@ input {
     width: 300px;
     border-radius: 25px;
     border: 1px solid #ccc;
+    color: #374151;
 }
 
 button {
@@ -139,7 +131,7 @@ button {
     background: #e5e7eb;
     border-radius: 15px;
     text-decoration: none;
-    color: black;
+    color: #374151;
 }
 
 /* PRODUCTS */
@@ -154,6 +146,7 @@ button {
     padding: 15px;
     border-radius: 10px;
     text-align: center;
+    color: #374151;
 }
 
 img {
@@ -166,7 +159,7 @@ img {
     color: gold;
 }
 
-/* 🔴🟢 COLORS */
+/* FAKE / GENUINE */
 .fake-text { color: red; font-weight:600;}
 .real-text { color: green; font-weight:600;}
 
@@ -198,6 +191,7 @@ img {
     padding:25px;
     border-radius:12px;
     width:400px;
+    color:#374151;
 }
 </style>
 
@@ -237,7 +231,7 @@ function closeModal(){
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-    <h3>Categories</h3>
+    <h3 style="color:#374151;">Categories</h3>
     <a href="/?category=electronics">Electronics</a>
     <a href="/?category=home">Home & Kitchen</a>
     <a href="/?category=jewellery">Jewellery</a>
@@ -271,7 +265,7 @@ function closeModal(){
 </div>
 
 {% if products %}
-<h2>Results for "{{ query }}"</h2>
+<h2 style="color:#374151;">Results for "{{ query }}"</h2>
 
 <div class="card-container">
     {% for p in products %}
