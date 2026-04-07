@@ -8,81 +8,76 @@ app = Flask(__name__)
 API_KEY = os.environ.get("API_KEY")
 
 
+# 🔹 Fetch products
 def get_products(query):
     url = "https://serpapi.com/search.json"
 
+    params = {
+        "engine": "amazon",
+        "k": query,
+        "amazon_domain": "amazon.in",
+        "api_key": API_KEY
+    }
+
+    response = requests.get(url, params=params)
+    data = response.json()
+
     products = []
-    seen_links = set()
+    results = data.get("shopping_results") or data.get("organic_results") or []
 
-    for start in [0, 20, 40]:
+    for item in results[:6]:
+        products.append({
+            "title": item.get("title", "No Title"),
+            "image": item.get("thumbnail") or item.get("image") or "https://via.placeholder.com/300",
+            "link": item.get("link", "#"),
+            "price": item.get("price", "N/A"),
+            "fake": random.randint(10, 30),
+            "real": random.randint(70, 90)
+        })
 
-        params = {
-            "engine": "amazon",
-            "k": query,
-            "amazon_domain": "amazon.in",
-            "api_key": API_KEY,
-            "num": 20,
-            "start": start
-        }
+    return products
 
-        response = requests.get(url, params=params)
-        data = response.json()
 
-        results = data.get("shopping_results") or data.get("organic_results") or []
-
-        for item in results:
-            link = item.get("link")
-
-            if not link or link in seen_links:
-                continue
-
-            seen_links.add(link)
-
-            title = item.get("title", "No Title")
-
-            image = (
-                item.get("thumbnail")
-                or item.get("image")
-                or item.get("thumbnail_url")
-                or "https://via.placeholder.com/300?text=No+Image"
-            )
-
-            price = item.get("price") or item.get("extracted_price") or "N/A"
-
-            # ⭐ GET RATING (IMPORTANT)
-            rating = item.get("rating") or 0
-
-            fake = random.randint(10, 30)
-            real = 100 - fake
-
-            products.append({
-                "title": title,
-                "image": image,
-                "link": link,
-                "price": price,
-                "rating": rating,
-                "fake": fake,
-                "real": real
-            })
-
-    # 🔥 SORT BY RATING (HIGH → LOW)
-    products = sorted(products, key=lambda x: x["rating"], reverse=True)
-
-    return products[:50]
+# 🔥 CATEGORY SUGGESTIONS
+category_suggestions = {
+    "electronics": "earbuds, headphones, smart watch",
+    "textiles": "kurti, saree, dresses",
+    "books": "best books, novels",
+    "home": "kitchen appliances, furniture",
+    "beauty": "makeup kit, skincare"
+}
 
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     products = []
     query = ""
+    selected_category = ""
 
+    # 🔹 Category clicked → show suggestions
+    category = request.args.get("category")
+    if category:
+        selected_category = category
+        query = category_suggestions.get(category, category)
+        products = get_products(query)
+
+    # 🔹 User search (inside category or normal)
     if request.method == "POST":
-        query = request.form.get("product")
+        user_query = request.form.get("product")
+        if user_query:
+            if selected_category:
+                query = selected_category + " " + user_query
+            else:
+                query = user_query
 
-        if query:
             products = get_products(query)
 
-    return render_template("index.html", products=products, query=query)
+    return render_template(
+        "index.html",
+        products=products,
+        query=query,
+        selected_category=selected_category
+    )
 
 
 if __name__ == "__main__":
