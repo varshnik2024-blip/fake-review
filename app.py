@@ -8,7 +8,36 @@ app = Flask(__name__)
 API_KEY = os.environ.get("API_KEY")
 
 
-# 🔥 CATEGORY SYSTEM
+def get_products(query):
+    url = "https://serpapi.com/search.json"
+
+    params = {
+        "engine": "amazon",
+        "k": query,
+        "amazon_domain": "amazon.in",
+        "api_key": API_KEY
+    }
+
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    products = []
+    results = data.get("shopping_results") or data.get("organic_results") or []
+
+    for item in results[:8]:
+        products.append({
+            "title": item.get("title"),
+            "image": item.get("thumbnail") or item.get("image"),
+            "link": item.get("link"),
+            "price": item.get("price", "N/A"),
+            "fake": random.randint(10, 30),
+            "real": random.randint(70, 90)
+        })
+
+    return products
+
+
+# 🔥 CATEGORY MAP
 category_map = {
     "electronics": {
         "search": "electronics gadgets",
@@ -32,7 +61,7 @@ category_map = {
     },
     "kids": {
         "search": "kids clothing",
-        "suggestions": ["kids dress", "toys", "school bag", "shoes"]
+        "suggestions": ["kids dress", "baby frock", "school uniform", "kids shoes"]
     },
     "cosmetics": {
         "search": "cosmetics beauty products",
@@ -45,48 +74,27 @@ category_map = {
 }
 
 
-def get_products(query):
-    url = "https://serpapi.com/search.json"
-
-    params = {
-        "engine": "amazon",
-        "k": query,
-        "amazon_domain": "amazon.in",
-        "api_key": API_KEY
-    }
-
-    response = requests.get(url, params=params)
-    data = response.json()
-
-    products = []
-    results = data.get("shopping_results") or data.get("organic_results") or []
-
-    for item in results[:6]:
-        products.append({
-            "title": item.get("title", "No Title"),
-            "image": item.get("thumbnail") or item.get("image") or "https://via.placeholder.com/300",
-            "link": item.get("link", "#"),
-            "price": item.get("price", "N/A"),
-            "fake": random.randint(10, 30),
-            "real": random.randint(70, 90)
-        })
-
-    return products
-
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     products = []
+    suggestions = []
     query = ""
-    suggestions = ["earbuds", "kurti", "smartphone", "makeup kit"]  # 🔥 default suggestions
 
     category = request.args.get("category")
+    query_from_url = request.args.get("query")
 
-    if category:
+    # CATEGORY CLICK
+    if category and category in category_map:
         query = category_map[category]["search"]
         suggestions = category_map[category]["suggestions"]
         products = get_products(query)
 
+    # SUGGESTION CLICK
+    if query_from_url:
+        query = query_from_url
+        products = get_products(query)
+
+    # SEARCH BAR
     if request.method == "POST":
         query = request.form.get("product")
         if query:

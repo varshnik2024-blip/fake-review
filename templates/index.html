@@ -14,7 +14,6 @@
             display: flex;
         }
 
-        /* 🔥 LEFT CATEGORY BAR */
         .sidebar {
             width: 220px;
             background: #f3f4f6;
@@ -42,7 +41,6 @@
             color: white;
         }
 
-        /* MAIN CONTENT */
         .main {
             flex: 1;
             padding: 30px;
@@ -60,7 +58,6 @@
         .fake { color: red; }
         .buy { color: green; }
 
-        /* 🔥 SEARCH LOWER */
         .search-box {
             margin-top: 40px;
         }
@@ -80,7 +77,6 @@
             border: none;
         }
 
-        /* 🔥 SUGGESTIONS */
         .suggestions {
             margin-top: 20px;
         }
@@ -94,7 +90,6 @@
             color: black;
         }
 
-        /* PRODUCTS GRID */
         .card-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -122,7 +117,6 @@
 
 <body>
 
-<!-- 🔥 LEFT SIDE CATEGORY -->
 <div class="sidebar">
     <h3>Categories</h3>
     <a href="/?category=electronics">Electronics</a>
@@ -135,7 +129,6 @@
     <a href="/?category=toys">Toys</a>
 </div>
 
-<!-- 🔥 MAIN -->
 <div class="main">
 
 <div class="hero">
@@ -144,23 +137,19 @@
         Before You <span class="buy">Buy</span> Anything
     </h1>
 
-    <!-- 🔥 SEARCH LOWER -->
     <form method="POST" class="search-box">
         <input type="text" name="product" placeholder="Search product..." value="{{ query }}">
         <button>Search</button>
     </form>
 
-    <!-- 🔥 ONLY 4 SUGGESTIONS -->
+    <!-- ✅ FIXED SUGGESTIONS -->
     <div class="suggestions">
         {% for s in suggestions[:4] %}
-        <a href="/" onclick="event.preventDefault(); document.querySelector('input').value='{{ s }}'; this.closest('form').submit();">
-            {{ s }}
-        </a>
+        <a href="/?query={{ s }}">{{ s }}</a>
         {% endfor %}
     </div>
 </div>
 
-<!-- RESULTS -->
 {% if products %}
 <h2>Results for "{{ query }}"</h2>
 
