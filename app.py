@@ -8,7 +8,43 @@ app = Flask(__name__)
 API_KEY = os.environ.get("API_KEY")
 
 
-# 🔹 Fetch products
+# 🔥 CATEGORY SYSTEM
+category_map = {
+    "electronics": {
+        "search": "electronics gadgets",
+        "suggestions": ["earbuds", "smartphone", "laptop", "smartwatch"]
+    },
+    "home": {
+        "search": "home kitchen appliances",
+        "suggestions": ["mixer", "fan", "sofa", "lamp"]
+    },
+    "jewellery": {
+        "search": "jewellery",
+        "suggestions": ["necklace", "earrings", "ring", "bracelet"]
+    },
+    "men": {
+        "search": "men clothing",
+        "suggestions": ["shirt", "jeans", "jacket", "tshirt"]
+    },
+    "women": {
+        "search": "women clothing",
+        "suggestions": ["kurti", "saree", "dress", "top"]
+    },
+    "kids": {
+        "search": "kids clothing",
+        "suggestions": ["kids dress", "toys", "school bag", "shoes"]
+    },
+    "cosmetics": {
+        "search": "cosmetics beauty products",
+        "suggestions": ["lipstick", "facewash", "perfume", "makeup kit"]
+    },
+    "toys": {
+        "search": "kids toys",
+        "suggestions": ["remote car", "doll", "lego", "puzzle"]
+    }
+}
+
+
 def get_products(query):
     url = "https://serpapi.com/search.json"
 
@@ -38,46 +74,28 @@ def get_products(query):
     return products
 
 
-# 🔥 CATEGORY SUGGESTIONS
-category_suggestions = {
-    "electronics": "earbuds, headphones, smart watch",
-    "textiles": "kurti, saree, dresses",
-    "books": "best books, novels",
-    "home": "kitchen appliances, furniture",
-    "beauty": "makeup kit, skincare"
-}
-
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     products = []
     query = ""
-    selected_category = ""
+    suggestions = ["earbuds", "kurti", "smartphone", "makeup kit"]  # 🔥 default suggestions
 
-    # 🔹 Category clicked → show suggestions
     category = request.args.get("category")
+
     if category:
-        selected_category = category
-        query = category_suggestions.get(category, category)
+        query = category_map[category]["search"]
+        suggestions = category_map[category]["suggestions"]
         products = get_products(query)
 
-    # 🔹 User search (inside category or normal)
     if request.method == "POST":
-        user_query = request.form.get("product")
-        if user_query:
-            if selected_category:
-                query = selected_category + " " + user_query
-            else:
-                query = user_query
-
+        query = request.form.get("product")
+        if query:
             products = get_products(query)
 
-    return render_template(
-        "index.html",
-        products=products,
-        query=query,
-        selected_category=selected_category
-    )
+    return render_template("index.html",
+                           products=products,
+                           query=query,
+                           suggestions=suggestions)
 
 
 if __name__ == "__main__":
