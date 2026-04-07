@@ -77,12 +77,6 @@ form button {
     cursor: pointer;
 }
 
-/* 🔷 RESULTS TITLE */
-.results-title {
-    margin: 30px 40px;
-    font-size: 22px;
-}
-
 /* 🔷 PRODUCT GRID */
 .products {
     display: flex;
@@ -132,7 +126,7 @@ form button {
     text-decoration: none;
 }
 
-/* ⭐ STAR SYSTEM */
+/* ⭐ STAR SYSTEM (FIXED AMAZON STYLE) */
 .stars {
     display: flex;
     justify-content: center;
@@ -155,9 +149,10 @@ form button {
     color: #ddd;
 }
 
-/* HALF STAR */
+/* HALF STAR (FIXED) */
 .star.half {
     position: relative;
+    display: inline-block;
     color: #ddd;
 }
 
@@ -165,12 +160,13 @@ form button {
     content: "★";
     position: absolute;
     left: 0;
+    top: 0;
     width: 50%;
     overflow: hidden;
     color: #f5b301;
 }
 
-/* 🔷 POPUP BACKGROUND */
+/* 🔷 POPUP */
 .popup {
     display: none;
     position: fixed;
@@ -183,7 +179,6 @@ form button {
     align-items: center;
 }
 
-/* 🔷 POPUP BOX */
 .popup-content {
     background: white;
     padding: 30px;
@@ -192,25 +187,10 @@ form button {
     position: relative;
 }
 
-/* CLOSE BUTTON */
 .close {
     position: absolute;
     right: 20px;
     top: 10px;
     cursor: pointer;
     font-size: 22px;
-}
-
-/* 🔷 POPUP GRID */
-.popup-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.box {
-    background: #f3f4f6;
-    padding: 15px;
-    border-radius: 10px;
 }

@@ -120,7 +120,7 @@ button {
     border: none;
 }
 
-/* 🔥 FIXED SUGGESTIONS (DARK GREY TEXT) */
+/* SUGGESTIONS */
 .suggestions {
     margin-top: 20px;
 }
@@ -132,8 +132,7 @@ button {
     border-radius: 20px;
     border: none;
     cursor: pointer;
-    color: #374151;   /* DARK GREY TEXT */
-    font-weight: 500;
+    color: #374151;
 }
 
 /* PRODUCTS */
@@ -157,6 +156,28 @@ img {
     object-fit: contain;
 }
 
+/* ⭐ AMAZON STAR STYLE */
+.stars {
+    display: inline-block;
+    font-size: 18px;
+    position: relative;
+    color: #ddd;
+}
+
+.stars::before {
+    content: "★★★★★";
+}
+
+.stars::after {
+    content: "★★★★★";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--rating) / 5 * 100%);
+    color: #f59e0b;
+    overflow: hidden;
+}
+
 .fake-text { color: red; }
 .real-text { color: green; }
 </style>
@@ -170,24 +191,6 @@ function closePopup(id) {
     document.getElementById(id).style.display = "none";
 }
 
-/* 🔥 PERFECT STAR FUNCTION */
-function renderStars(rating) {
-    let full = Math.floor(rating);
-    let half = (rating % 1) >= 0.5;
-    let stars = "";
-
-    for (let i = 0; i < full; i++) {
-        stars += "⭐";
-    }
-
-    if (half) {
-        stars += "⭐½";
-    }
-
-    return stars;
-}
-
-/* 🔥 CLICK SUGGESTION */
 function searchSuggestion(value) {
     document.getElementById("searchInput").value = value;
     document.getElementById("searchForm").submit();
@@ -214,7 +217,7 @@ function searchSuggestion(value) {
 
 <div id="how" class="popup">
     <h3>How it works</h3>
-    <p>Our system analyzes large volumes of product reviews, detects unusual patterns, repeated phrases, and spam behavior to estimate fake vs genuine reviews.</p>
+    <p>Our system analyzes reviews and estimates fake vs genuine reviews.</p>
     <button onclick="closePopup('how')">Close</button>
 </div>
 
@@ -247,7 +250,6 @@ function searchSuggestion(value) {
         <button>Search</button>
     </form>
 
-    <!-- 🔥 CLEAR SUGGESTIONS -->
     <div class="suggestions">
         {% for s in suggestions[:4] %}
         <button onclick="searchSuggestion('{{ s }}')">{{ s }}</button>
@@ -263,13 +265,9 @@ function searchSuggestion(value) {
         <h4>{{ p.title }}</h4>
         <p>{{ p.price }}</p>
 
-        <!-- ⭐ FINAL STAR DISPLAY -->
-        <p>
-            <script>
-                document.write(renderStars({{ p.rating }}));
-            </script>
-            ({{ p.rating }})
-        </p>
+        <!-- ⭐ FINAL AMAZON STAR -->
+        <div class="stars" style="--rating: {{ p.rating }}"></div>
+        <p>{{ p.rating }}</p>
 
         <p class="fake-text">Fake: {{ p.fake }}%</p>
         <p class="real-text">Genuine: {{ p.real }}%</p>
