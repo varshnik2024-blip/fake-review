@@ -124,11 +124,13 @@ button {
     margin-top: 20px;
 }
 
-.suggestions span {
+.suggestions button {
     padding: 8px 12px;
     margin: 5px;
     background: #e5e7eb;
     border-radius: 15px;
+    border: none;
+    cursor: pointer;
 }
 
 /* PRODUCTS */
@@ -165,12 +167,20 @@ function closePopup(id) {
     document.getElementById(id).style.display = "none";
 }
 
-function renderStars(rating) {
+/* ⭐ FIXED STAR FUNCTION */
+function getStars(rating) {
+    let stars = "";
     let full = Math.floor(rating);
-    let half = rating % 1 >= 0.5;
-    let stars = "⭐".repeat(full);
-    if (half) stars += "½";
+    for (let i = 0; i < full; i++) {
+        stars += "⭐";
+    }
     return stars;
+}
+
+/* 🔥 SUGGESTION CLICK WORKING */
+function searchSuggestion(value) {
+    document.getElementById("searchInput").value = value;
+    document.getElementById("searchForm").submit();
 }
 </script>
 
@@ -188,13 +198,13 @@ function renderStars(rating) {
 <!-- POPUPS -->
 <div id="about" class="popup">
     <h3>About</h3>
-    <p>TrustScan helps users identify genuine versus fake reviews so they can make smarter purchasing decisions.</p>
+    <p>This website helps users identify fake and genuine reviews before purchasing products.</p>
     <button onclick="closePopup('about')">Close</button>
 </div>
 
 <div id="how" class="popup">
     <h3>How it works</h3>
-    <p>Our system analyzes large volumes of product reviews, detects unusual patterns, repeated phrases, and spam behavior to estimate fake vs genuine reviews.</p>
+    <p>Our system analyzes product reviews and estimates fake vs genuine reviews to guide users.</p>
     <button onclick="closePopup('how')">Close</button>
 </div>
 
@@ -222,14 +232,16 @@ function renderStars(rating) {
         Before You <span class="buy">Buy</span> Anything
     </h1>
 
-    <form method="POST" class="search-box">
-        <input type="text" name="product" placeholder="Search product...">
+    <!-- 🔥 FORM FIX -->
+    <form method="POST" class="search-box" id="searchForm">
+        <input type="text" id="searchInput" name="product" placeholder="Search product...">
         <button>Search</button>
     </form>
 
+    <!-- 🔥 CLICKABLE SUGGESTIONS -->
     <div class="suggestions">
         {% for s in suggestions[:4] %}
-        <span>{{ s }}</span>
+        <button onclick="searchSuggestion('{{ s }}')">{{ s }}</button>
         {% endfor %}
     </div>
 </div>
@@ -242,8 +254,11 @@ function renderStars(rating) {
         <h4>{{ p.title }}</h4>
         <p>{{ p.price }}</p>
 
+        <!-- ⭐ FIXED STAR DISPLAY -->
         <p>
-            ⭐ {{ p.rating }}
+            <script>
+                document.write(getStars({{ p.rating }}));
+            </script>
         </p>
 
         <p class="fake-text">Fake: {{ p.fake }}%</p>
