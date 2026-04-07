@@ -2,146 +2,170 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TrustScan</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Fake Review Detector</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            color: #111827;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+        }
+
+        .fake { color: #ef4444; }
+        .buy { color: #10b981; }
+
+        .subtitle {
+            color: #6b7280;
+            margin-top: 10px;
+        }
+
+        /* 🔥 CATEGORY BAR */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .categories a {
+            padding: 8px 15px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #111827;
+        }
+
+        .categories a:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        /* SEARCH */
+        .search-box {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            background: #10b981;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* RESULTS */
+        .results-title {
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        /* 🔥 GRID */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+
+        .fake-text { color: #ef4444; }
+        .real-text { color: #10b981; }
+
+        .card a {
+            display: inline-block;
+            margin-top: 10px;
+            background: #10b981;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- 🔷 NAVBAR -->
-<nav class="navbar">
-    <h2 class="logo">TrustScan</h2>
+<div class="hero">
 
-    <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#" onclick="openPopup('how')">How it Works</a></li>
-        <li><a href="#" onclick="openPopup('about')">About</a></li>
-    </ul>
-</nav>
-
-<!-- 🔷 HERO -->
-<div id="home" class="hero">
     <h1 class="hero-title">
         Detect <span class="fake">Fake</span> Reviews <br>
         Before You <span class="buy">Buy</span> Anything
     </h1>
 
-    <p class="subtitle">
-        Search any product — our system analyzes reviews and shows what's real and fake
-    </p>
+    <p class="subtitle">Search any product or choose a category</p>
 
-    <form method="POST">
-        <input type="text" name="product" placeholder="Enter product..." value="{{ query }}">
-        <button type="submit">SCAN</button>
+    <!-- 🔥 CATEGORIES -->
+    <div class="categories">
+        <a href="/?category=electronics">Electronics</a>
+        <a href="/?category=textiles">Textiles</a>
+        <a href="/?category=books">Books</a>
+        <a href="/?category=home">Home</a>
+        <a href="/?category=beauty">Beauty</a>
+    </div>
+
+    <!-- 🔍 SEARCH -->
+    <form method="POST" class="search-box">
+        <input type="text" name="product" placeholder="Search product..." value="{{ query }}">
+        <button type="submit">Search</button>
     </form>
+
 </div>
 
-<!-- 🔷 RESULTS -->
 {% if products %}
 <h2 class="results-title">Results for "{{ query }}"</h2>
 
-<div class="products">
-{% for p in products %}
-<div class="card">
-
-    <img src="{{ p.image }}">
-
-    <h3>{{ p.title }}</h3>
-
-    <p>₹{{ p.price }}</p>
-
-    <!-- ⭐ STARS -->
-    <div class="stars">
-        {% set full = p.rating|int %}
-        {% set half = 1 if p.rating - full >= 0.5 else 0 %}
-        {% set empty = 5 - full - half %}
-
-        {% for i in range(full) %}
-        <span class="star full">★</span>
-        {% endfor %}
-
-        {% if half %}
-        <span class="star half">★</span>
-        {% endif %}
-
-        {% for i in range(empty) %}
-        <span class="star empty">★</span>
-        {% endfor %}
+<div class="card-container">
+    {% for p in products %}
+    <div class="card">
+        <img src="{{ p.image }}">
+        <h4>{{ p.title }}</h4>
+        <p class="price">{{ p.price }}</p>
+        <p class="fake-text">Fake: {{ p.fake }}%</p>
+        <p class="real-text">Real: {{ p.real }}%</p>
+        <a href="{{ p.link }}" target="_blank">View Product</a>
     </div>
-
-    <p class="fake">Fake: {{ p.fake }}%</p>
-    <p class="real">Real: {{ p.real }}%</p>
-
-    <a href="{{ p.link }}" target="_blank">View Product</a>
-
-</div>
-{% endfor %}
+    {% endfor %}
 </div>
 {% endif %}
-
-<!-- 🔥 POPUP -->
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <span class="close" onclick="closePopup()">×</span>
-
-        <div id="popup-body"></div>
-
-    </div>
-</div>
-
-<!-- 🔥 SCRIPT -->
-<script>
-function openPopup(type) {
-    let content = "";
-
-    if(type === "how") {
-        content = `
-        <h2>How it Works</h2>
-
-        <div class="popup-grid">
-
-            <div class="box">
-                <h3>🔍 Enter a product</h3>
-                <p>Type any product name or keyword</p>
-            </div>
-
-            <div class="box">
-                <h3>🌐 Live data fetch</h3>
-                <p>We collect product details from online sources</p>
-            </div>
-
-            <div class="box">
-                <h3>📊 Smart analysis</h3>
-                <p>Review patterns and ratings are analyzed</p>
-            </div>
-
-            <div class="box">
-                <h3>⚡ Instant result</h3>
-                <p>Fake vs Real percentage is shown instantly</p>
-            </div>
-
-        </div>
-        `;
-    }
-
-    if(type === "about") {
-        content = `
-        <h2>About</h2>
-        <p>
-        TrustScan helps users identify fake reviews before buying products online.
-        It improves decision making by analyzing ratings and review patterns.
-        </p>
-        `;
-    }
-
-    document.getElementById("popup-body").innerHTML = content;
-    document.getElementById("popup").style.display = "flex";
-}
-
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
-}
-</script>
 
 </body>
 </html>
