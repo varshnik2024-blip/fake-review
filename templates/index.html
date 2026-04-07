@@ -13,7 +13,7 @@ body {
     display: flex;
 }
 
-/* 🔥 TOP HEADER */
+/* 🔥 HEADER */
 .header {
     position: fixed;
     top: 0;
@@ -25,15 +25,18 @@ body {
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid #eee;
-    z-index: 1000;
 }
 
-/* LOGO LEFT */
+/* 🔥 LOGO UPDATED */
 .logo {
     position: absolute;
     left: 20px;
-    font-weight: 800;
-    font-size: 20px;
+    font-weight: 900;
+    font-size: 26px;
+
+    background: linear-gradient(90deg, #10b981, #3b82f6, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* NAV RIGHT */
@@ -44,31 +47,11 @@ body {
 
 .topbar a {
     margin-left: 20px;
-    cursor: pointer;
     text-decoration: none;
-    font-weight: 500;
     color: #111;
 }
 
-/* 🔥 MODAL */
-.modal {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 2000;
-}
-
-.modal-content {
-    background: white;
-    width: 60%;
-    margin: 120px auto;
-    padding: 30px;
-    border-radius: 12px;
-}
-
-/* 🔥 SIDEBAR */
+/* SIDEBAR */
 .sidebar {
     width: 220px;
     background: #f3f4f6;
@@ -87,18 +70,13 @@ body {
     color: black;
 }
 
-.sidebar a:hover {
-    background: #10b981;
-    color: white;
-}
-
 /* MAIN */
 .main {
     flex: 1;
-    padding: 100px 40px 40px;
+    padding: 100px 40px;
 }
 
-/* HERO CENTER */
+/* HERO */
 .hero {
     text-align: center;
 }
@@ -137,7 +115,6 @@ button {
     display: flex;
     justify-content: center;
     gap: 10px;
-    flex-wrap: wrap;
 }
 
 .suggestions a {
@@ -170,7 +147,6 @@ img {
 
 .stars {
     color: gold;
-    margin: 5px 0;
 }
 
 .buy-btn {
@@ -186,7 +162,7 @@ img {
 
 <body>
 
-<!-- 🔥 HEADER -->
+<!-- HEADER -->
 <div class="header">
     <div class="logo">TrustScan</div>
 
@@ -197,31 +173,7 @@ img {
     </div>
 </div>
 
-<!-- 🔥 MODALS -->
-<div id="how" class="modal">
-    <div class="modal-content">
-        <h2>How it works</h2>
-        <p>
-        Our system analyzes product reviews to detect patterns, repeated phrases,
-        and unusual behavior. It estimates fake and genuine reviews to help users
-        make better purchasing decisions.
-        </p>
-        <button onclick="closeModal('how')">Close</button>
-    </div>
-</div>
-
-<div id="about" class="modal">
-    <div class="modal-content">
-        <h2>About</h2>
-        <p>
-        TrustScan helps users identify whether product reviews are trustworthy or misleading.
-        It provides insights into review authenticity so users can make smarter buying decisions.
-        </p>
-        <button onclick="closeModal('about')">Close</button>
-    </div>
-</div>
-
-<!-- 🔥 SIDEBAR -->
+<!-- SIDEBAR -->
 <div class="sidebar">
     <h3>Categories</h3>
     <a href="/?category=electronics">Electronics</a>
@@ -235,7 +187,7 @@ img {
     <a href="/?category=carry">Carry Essentials</a>
 </div>
 
-<!-- 🔥 MAIN -->
+<!-- MAIN -->
 <div class="main">
 
 <div class="hero">
@@ -281,15 +233,6 @@ img {
 {% endif %}
 
 </div>
-
-<script>
-function openModal(id){
-    document.getElementById(id).style.display = "block";
-}
-function closeModal(id){
-    document.getElementById(id).style.display = "none";
-}
-</script>
 
 </body>
 </html>
