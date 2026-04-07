@@ -24,20 +24,25 @@ def get_products(query):
     products = []
     results = data.get("shopping_results") or data.get("organic_results") or []
 
-    for item in results[:8]:
+    for item in results[:10]:
+        rating = item.get("rating") or round(random.uniform(3.0, 5.0), 1)
+
         products.append({
             "title": item.get("title"),
             "image": item.get("thumbnail") or item.get("image"),
             "link": item.get("link"),
             "price": item.get("price", "N/A"),
+            "rating": float(rating),
             "fake": random.randint(10, 30),
             "real": random.randint(70, 90)
         })
 
+    # ✅ SORT BY HIGHEST RATING
+    products = sorted(products, key=lambda x: x["rating"], reverse=True)
+
     return products
 
 
-# 🔥 CATEGORY MAP
 category_map = {
     "electronics": {
         "search": "electronics gadgets",
@@ -83,18 +88,15 @@ def home():
     category = request.args.get("category")
     query_from_url = request.args.get("query")
 
-    # CATEGORY CLICK
     if category and category in category_map:
         query = category_map[category]["search"]
         suggestions = category_map[category]["suggestions"]
         products = get_products(query)
 
-    # SUGGESTION CLICK
     if query_from_url:
         query = query_from_url
         products = get_products(query)
 
-    # SEARCH BAR
     if request.method == "POST":
         query = request.form.get("product")
         if query:
