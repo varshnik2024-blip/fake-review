@@ -24,6 +24,7 @@ def get_products(query):
     products = []
     results = data.get("shopping_results") or data.get("organic_results") or []
 
+    # 🔥 INCREASE PRODUCTS (40+)
     for item in results[:50]:
         rating = item.get("rating") or round(random.uniform(3.0, 5.0), 1)
 
@@ -37,6 +38,7 @@ def get_products(query):
             "real": random.randint(70, 90)
         })
 
+    # 🔥 SORT BY RATING
     products = sorted(products, key=lambda x: x["rating"], reverse=True)
 
     return products
@@ -47,7 +49,7 @@ category_map = {
         "search": "electronics gadgets",
         "suggestions": ["earbuds", "smartphone", "laptop", "smartwatch"]
     },
-    "home": {
+    "home & kitchen": {
         "search": "home kitchen appliances",
         "suggestions": ["mixer", "fan", "sofa", "lamp"]
     },
@@ -55,27 +57,27 @@ category_map = {
         "search": "jewellery",
         "suggestions": ["necklace", "earrings", "ring", "bracelet"]
     },
-    "men": {
+    "menswear": {
         "search": "men clothing",
         "suggestions": ["shirt", "jeans", "jacket", "tshirt"]
     },
-    "women": {
+    "womenswear": {
         "search": "women clothing",
         "suggestions": ["kurti", "saree", "dress", "top"]
     },
-    "kids": {
+    "kids wear": {
         "search": "kids clothing",
         "suggestions": ["kids dress", "baby frock", "school uniform", "kids shoes"]
     },
-    "cosmetics": {
-        "search": "beauty products",
+    "Beauty & Personal Care": {
+        "search": " beauty products",
         "suggestions": ["lipstick", "facewash", "perfume", "makeup kit"]
     },
-    "carry": {
+    "carry essentials" : {
         "search": "handbags trolley school bags",
         "suggestions": ["handbag", "trolley bag", "school bag", "travel bag"]
     },
-    "toys": {
+    "Toys & Games": {
         "search": "kids toys",
         "suggestions": ["remote car", "doll", "lego", "puzzle"]
     }
@@ -105,13 +107,10 @@ def home():
         if query:
             products = get_products(query)
 
-    return render_template(
-        "index.html",
-        products=products,
-        query=query,
-        suggestions=suggestions,
-        category=category   # 👈 THIS FIXES HIGHLIGHT
-    )
+    return render_template("index.html",
+                           products=products,
+                           query=query,
+                           suggestions=suggestions)
 
 
 if __name__ == "__main__":
