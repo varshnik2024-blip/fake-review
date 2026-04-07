@@ -13,11 +13,10 @@ body {
     display: flex;
 }
 
-/* 🔥 HEADER */
+/* HEADER */
 .header {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
     height: 70px;
     background: white;
@@ -25,21 +24,21 @@ body {
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid #eee;
+    z-index: 1000;
 }
 
-/* 🔥 LOGO UPDATED */
+/* LOGO */
 .logo {
     position: absolute;
     left: 20px;
     font-weight: 900;
-    font-size: 26px;
-
-    background: linear-gradient(90deg, #10b981, #3b82f6, #ef4444);
+    font-size: 28px;
+    background: linear-gradient(90deg,#10b981,#3b82f6,#ef4444);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* NAV RIGHT */
+/* NAV */
 .topbar {
     position: absolute;
     right: 30px;
@@ -47,8 +46,10 @@ body {
 
 .topbar a {
     margin-left: 20px;
+    cursor: pointer;
     text-decoration: none;
     color: #111;
+    font-weight: 500;
 }
 
 /* SIDEBAR */
@@ -60,15 +61,27 @@ body {
     margin-top: 70px;
 }
 
+/* COLORFUL CATEGORY BUTTONS */
 .sidebar a {
     display: block;
     padding: 10px;
-    margin-bottom: 8px;
-    background: white;
-    border-radius: 8px;
+    margin-bottom: 10px;
+    border-radius: 10px;
     text-decoration: none;
-    color: black;
+    color: white;
+    font-weight: 500;
 }
+
+/* Different colors */
+.sidebar a:nth-child(2){background:#3b82f6;}
+.sidebar a:nth-child(3){background:#10b981;}
+.sidebar a:nth-child(4){background:#f59e0b;}
+.sidebar a:nth-child(5){background:#ef4444;}
+.sidebar a:nth-child(6){background:#8b5cf6;}
+.sidebar a:nth-child(7){background:#ec4899;}
+.sidebar a:nth-child(8){background:#06b6d4;}
+.sidebar a:nth-child(9){background:#84cc16;}
+.sidebar a:nth-child(10){background:#6366f1;}
 
 /* MAIN */
 .main {
@@ -149,6 +162,10 @@ img {
     color: gold;
 }
 
+/* 🔴🟢 COLORS */
+.fake-text { color: red; font-weight:600;}
+.real-text { color: green; font-weight:600;}
+
 .buy-btn {
     background: #10b981;
     color: white;
@@ -157,7 +174,48 @@ img {
     display: inline-block;
     margin-top: 10px;
 }
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.4);
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+}
+
+.modal-box {
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    width:400px;
+}
 </style>
+
+<script>
+function openModal(type){
+    document.getElementById("modal").style.display="flex";
+
+    if(type==="about"){
+        document.getElementById("modalContent").innerHTML =
+        "<h3>About TrustScan</h3><p>TrustScan helps users identify genuine vs fake reviews so they can make smarter purchasing decisions.</p>";
+    }
+    else{
+        document.getElementById("modalContent").innerHTML =
+        "<h3>How it works</h3><p>Our system analyzes large volumes of product reviews, detects unusual patterns, repeated phrases, and spam behavior to estimate fake vs genuine reviews.</p>";
+    }
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display="none";
+}
+</script>
+
 </head>
 
 <body>
@@ -223,8 +281,8 @@ img {
             ({{ p.rating }})
         </div>
 
-        <p>Fake: {{ p.fake }}%</p>
-        <p>Genuine: {{ p.real }}%</p>
+        <p class="fake-text">Fake: {{ p.fake }}%</p>
+        <p class="real-text">Genuine: {{ p.real }}%</p>
 
         <a href="{{ p.link }}" target="_blank" class="buy-btn">Amazon</a>
     </div>
@@ -232,6 +290,11 @@ img {
 </div>
 {% endif %}
 
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="closeModal()">
+    <div class="modal-box" id="modalContent" onclick="event.stopPropagation()"></div>
 </div>
 
 </body>
