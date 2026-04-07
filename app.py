@@ -42,7 +42,7 @@ def get_products(query):
     return products
 
 
-# ✅ FIXED CATEGORY MAP
+# ✅ CATEGORY MAP (MATCHES HTML)
 category_map = {
     "electronics": {
         "search": "electronics gadgets",
@@ -91,16 +91,11 @@ def home():
     selected_category = None
 
     category = request.args.get("category")
-    query_from_url = request.args.get("query")
 
     if category and category in category_map:
         selected_category = category
         query = category_map[category]["search"]
         suggestions = category_map[category]["suggestions"]
-        products = get_products(query)
-
-    if query_from_url:
-        query = query_from_url
         products = get_products(query)
 
     if request.method == "POST":

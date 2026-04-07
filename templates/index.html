@@ -14,6 +14,18 @@ body {
     display: flex;
 }
 
+/* LOGO */
+.logo {
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(45deg, #10b981, #3b82f6, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 /* HEADER */
 .header {
     position: fixed;
@@ -21,17 +33,15 @@ body {
     left: 220px;
     right: 0;
     height: 60px;
-    background: white;
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
     padding-right: 40px;
+    background: white;
 }
 
 .header a {
     margin-left: 20px;
-    text-decoration: none;
-    color: #374151;
     cursor: pointer;
 }
 
@@ -47,18 +57,6 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
     z-index: 100;
-}
-
-/* LOGO */
-.logo {
-    position: fixed;
-    top: 10px;
-    left: 20px;
-    font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(45deg, #10b981, #3b82f6, #ef4444);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 /* SIDEBAR */
@@ -88,7 +86,7 @@ body {
 /* MAIN */
 .main {
     flex: 1;
-    padding: 100px 30px 30px 30px;
+    padding: 100px 30px;
 }
 
 .hero {
@@ -167,7 +165,7 @@ function closePopup(id) {
     document.getElementById(id).style.display = "none";
 }
 
-function getStars(rating) {
+function renderStars(rating) {
     let full = Math.floor(rating);
     let half = rating % 1 >= 0.5;
     let stars = "⭐".repeat(full);
@@ -190,13 +188,13 @@ function getStars(rating) {
 <!-- POPUPS -->
 <div id="about" class="popup">
     <h3>About</h3>
-    <p>This website helps users identify fake and genuine reviews before buying products.</p>
+    <p>This website helps users identify fake and genuine reviews before purchasing products.</p>
     <button onclick="closePopup('about')">Close</button>
 </div>
 
 <div id="how" class="popup">
     <h3>How it works</h3>
-    <p>We analyze product reviews and estimate fake vs genuine reviews to help users make better decisions.</p>
+    <p>Our system analyzes product reviews and estimates fake vs genuine reviews to guide users.</p>
     <button onclick="closePopup('how')">Close</button>
 </div>
 
@@ -243,11 +241,14 @@ function getStars(rating) {
         <img src="{{ p.image }}">
         <h4>{{ p.title }}</h4>
         <p>{{ p.price }}</p>
+
         <p>
             ⭐ {{ p.rating }}
         </p>
+
         <p class="fake-text">Fake: {{ p.fake }}%</p>
         <p class="real-text">Genuine: {{ p.real }}%</p>
+
         <a href="{{ p.link }}" target="_blank">Amazon</a>
     </div>
     {% endfor %}
