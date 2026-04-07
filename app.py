@@ -73,6 +73,10 @@ category_map = {
         "search": "cosmetics beauty products",
         "suggestions": ["lipstick", "facewash", "perfume", "makeup kit"]
     },
+    "carry essentials" : {
+        "search": "handbags trolley school bags",
+        "suggestions": ["handbag", "trolley bag", "school bag", "travel bag"]
+    },
     "toys": {
         "search": "kids toys",
         "suggestions": ["remote car", "doll", "lego", "puzzle"]

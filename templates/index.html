@@ -1,161 +1,183 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Fake Review Detector</title>
+<title>Fake Review Detector</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: Poppins;
-            margin: 0;
-            background: #ffffff;
-            color: #111827;
-            display: flex;
-        }
+<style>
+body {
+    font-family: Poppins;
+    margin: 0;
+    background: #ffffff;
+    display: flex;
+}
 
-        /* 🔥 TOP RIGHT NAV */
-        .topbar {
-            position: fixed;
-            right: 20px;
-            top: 15px;
-        }
+/* 🔥 TOP RIGHT NAV */
+.topbar {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+}
 
-        .topbar a {
-            margin-left: 20px;
-            cursor: pointer;
-            text-decoration: none;
-            color: black;
-        }
+.topbar a {
+    margin-left: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    color: #111;
+}
 
-        /* MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
+/* 🔥 MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
 
-        .modal-content {
-            background: white;
-            padding: 20px;
-            width: 50%;
-            margin: 100px auto;
-            border-radius: 10px;
-        }
+.modal-content {
+    background: white;
+    width: 60%;
+    margin: 100px auto;
+    padding: 30px;
+    border-radius: 12px;
+}
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 220px;
-            background: #f3f4f6;
-            padding: 20px;
-            height: 100vh;
-        }
+/* 🔥 SIDEBAR */
+.sidebar {
+    width: 220px;
+    background: #f3f4f6;
+    padding: 20px;
+    height: 100vh;
+}
 
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            margin-bottom: 8px;
-            background: white;
-            border-radius: 8px;
-            text-decoration: none;
-            color: black;
-        }
+.sidebar a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 8px;
+    text-decoration: none;
+    color: black;
+}
 
-        .sidebar a:hover {
-            background: #10b981;
-            color: white;
-        }
+.sidebar a:hover {
+    background: #10b981;
+    color: white;
+}
 
-        .main {
-            flex: 1;
-            padding: 40px;
-        }
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 40px;
+}
 
-        .hero {
-            text-align: center;
-        }
+/* HERO */
+.hero {
+    text-align: center;
+}
 
-        .hero-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-        }
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
 
-        .fake { color: red; }
-        .buy { color: green; }
+.fake { color: red; }
+.buy { color: green; }
 
-        .search-box {
-            margin-top: 40px;
-        }
+/* SEARCH */
+.search-box {
+    margin-top: 40px;
+}
 
-        input {
-            padding: 12px;
-            width: 300px;
-            border-radius: 25px;
-            border: 1px solid #ccc;
-        }
+input {
+    padding: 12px;
+    width: 300px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+}
 
-        button {
-            padding: 12px 20px;
-            border-radius: 25px;
-            background: #10b981;
-            color: white;
-            border: none;
-        }
+button {
+    padding: 12px 20px;
+    border-radius: 25px;
+    background: #10b981;
+    color: white;
+    border: none;
+}
 
-        .suggestions a {
-            padding: 8px;
-            background: #e5e7eb;
-            margin: 5px;
-            border-radius: 10px;
-        }
+/* 🔥 FIXED SUGGESTIONS ALIGNMENT */
+.suggestions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
 
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
+.suggestions a {
+    padding: 8px 12px;
+    background: #e5e7eb;
+    border-radius: 15px;
+    text-decoration: none;
+    color: black;
+}
 
-        .card {
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-        }
+/* PRODUCTS */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
 
-        img {
-            width: 100%;
-            height: 150px;
-            object-fit: contain;
-        }
+.card {
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
 
-        .stars { color: gold; }
+img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+}
 
-        .buy-btn {
-            background: #10b981;
-            color: white;
-            padding: 8px;
-            display: inline-block;
-            margin-top: 10px;
-            border-radius: 6px;
-        }
-    </style>
+.stars {
+    color: gold;
+    margin: 5px 0;
+}
+
+.buy-btn {
+    background: #10b981;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
 <!-- 🔥 NAVBAR -->
 <div class="topbar">
-    <a onclick="openModal('how')">How it works</a>
+    <a href="/">Home</a>
     <a onclick="openModal('about')">About</a>
+    <a onclick="openModal('how')">How it works</a>
 </div>
 
 <!-- 🔥 MODALS -->
 <div id="how" class="modal">
     <div class="modal-content">
         <h2>How it works</h2>
-        <p>We analyze product reviews using AI and estimate fake vs genuine reviews.</p>
+        <p>
+        Our system analyzes thousands of product reviews using AI techniques.
+        It detects unusual patterns, repeated phrases, and spam behavior
+        to estimate how many reviews are fake vs genuine.
+        </p>
         <button onclick="closeModal('how')">Close</button>
     </div>
 </div>
@@ -163,24 +185,32 @@
 <div id="about" class="modal">
     <div class="modal-content">
         <h2>About</h2>
-        <p>This project helps users identify fake reviews before buying products.</p>
+        <p>
+        Fake Review Detector helps users make smarter buying decisions.
+        Instead of trusting ratings blindly, our system evaluates review
+        authenticity and shows whether a product is reliable or manipulated.
+        </p>
         <button onclick="closeModal('about')">Close</button>
     </div>
 </div>
 
-<!-- SIDEBAR -->
+<!-- 🔥 SIDEBAR -->
 <div class="sidebar">
     <h3>Categories</h3>
     <a href="/?category=electronics">Electronics</a>
-    <a href="/?category=home">Home</a>
+    <a href="/?category=home">Home & Kitchen</a>
     <a href="/?category=jewellery">Jewellery</a>
     <a href="/?category=men">Men</a>
     <a href="/?category=women">Women</a>
     <a href="/?category=kids">Kids</a>
     <a href="/?category=cosmetics">Cosmetics</a>
     <a href="/?category=toys">Toys</a>
+
+    <!-- 🔥 NEW CATEGORY -->
+    <a href="/?category=carry">Carry Essentials</a>
 </div>
 
+<!-- 🔥 MAIN -->
 <div class="main">
 
 <div class="hero">
@@ -190,10 +220,11 @@
     </h1>
 
     <form method="POST" class="search-box">
-        <input type="text" name="product" value="{{ query }}">
+        <input type="text" name="product" value="{{ query }}" placeholder="Search product...">
         <button>Search</button>
     </form>
 
+    <!-- 🔥 FIXED -->
     <div class="suggestions">
         {% for s in suggestions[:4] %}
         <a href="/?query={{ s }}">{{ s }}</a>
