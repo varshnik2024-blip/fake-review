@@ -49,7 +49,7 @@ category_map = {
         "search": "electronics gadgets",
         "suggestions": ["earbuds", "smartphone", "laptop", "smartwatch"]
     },
-    "home": {
+    "home & kitchen": {
         "search": "home kitchen appliances",
         "suggestions": ["mixer", "fan", "sofa", "lamp"]
     },
@@ -57,27 +57,27 @@ category_map = {
         "search": "jewellery",
         "suggestions": ["necklace", "earrings", "ring", "bracelet"]
     },
-    "men": {
+    "menswear": {
         "search": "men clothing",
         "suggestions": ["shirt", "jeans", "jacket", "tshirt"]
     },
-    "women": {
+    "womenswear": {
         "search": "women clothing",
         "suggestions": ["kurti", "saree", "dress", "top"]
     },
-    "kids": {
+    "kids wear": {
         "search": "kids clothing",
         "suggestions": ["kids dress", "baby frock", "school uniform", "kids shoes"]
     },
-    "cosmetics": {
-        "search": "cosmetics beauty products",
+    "Beauty & Personal Care": {
+        "search": " beauty products",
         "suggestions": ["lipstick", "facewash", "perfume", "makeup kit"]
     },
     "carry essentials" : {
         "search": "handbags trolley school bags",
         "suggestions": ["handbag", "trolley bag", "school bag", "travel bag"]
     },
-    "toys": {
+    "Toys & Games": {
         "search": "kids toys",
         "suggestions": ["remote car", "doll", "lego", "puzzle"]
     }
