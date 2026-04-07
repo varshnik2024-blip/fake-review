@@ -26,13 +26,27 @@ body {
     align-items: center;
     justify-content: flex-end;
     padding-right: 40px;
-    z-index: 10;
 }
 
 .header a {
     margin-left: 20px;
     text-decoration: none;
     color: #374151;
+    cursor: pointer;
+}
+
+/* POPUP */
+.popup {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 30%;
+    width: 40%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    z-index: 100;
 }
 
 /* LOGO */
@@ -66,7 +80,6 @@ body {
     color: #374151;
 }
 
-/* HIGHLIGHT SELECTED */
 .active {
     background: #d1d5db;
     font-weight: bold;
@@ -90,7 +103,6 @@ body {
 .fake { color: red; }
 .buy { color: green; }
 
-/* SEARCH */
 .search-box {
     margin-top: 40px;
 }
@@ -110,7 +122,6 @@ button {
     border: none;
 }
 
-/* SUGGESTIONS */
 .suggestions {
     margin-top: 20px;
 }
@@ -145,8 +156,26 @@ img {
 
 .fake-text { color: red; }
 .real-text { color: green; }
-
 </style>
+
+<script>
+function showPopup(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+function closePopup(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+function getStars(rating) {
+    let full = Math.floor(rating);
+    let half = rating % 1 >= 0.5;
+    let stars = "⭐".repeat(full);
+    if (half) stars += "½";
+    return stars;
+}
+</script>
+
 </head>
 
 <body>
@@ -154,9 +183,21 @@ img {
 <div class="logo">TrustScan</div>
 
 <div class="header">
-    <a href="/">Home</a>
-    <a href="#">About</a>
-    <a href="#">How it works</a>
+    <a onclick="showPopup('about')">About</a>
+    <a onclick="showPopup('how')">How it works</a>
+</div>
+
+<!-- POPUPS -->
+<div id="about" class="popup">
+    <h3>About</h3>
+    <p>This website helps users identify fake and genuine reviews before buying products.</p>
+    <button onclick="closePopup('about')">Close</button>
+</div>
+
+<div id="how" class="popup">
+    <h3>How it works</h3>
+    <p>We analyze product reviews and estimate fake vs genuine reviews to help users make better decisions.</p>
+    <button onclick="closePopup('how')">Close</button>
 </div>
 
 <!-- SIDEBAR -->
@@ -165,14 +206,13 @@ img {
 
     <a href="/?category=electronics" class="{{ 'active' if selected_category=='electronics' else '' }}">Electronics</a>
     <a href="/?category=home" class="{{ 'active' if selected_category=='home' else '' }}">Home & Kitchen</a>
-    <a href="/?category=jewellery" class="{{ 'active' if selected_category=='jewellery' else '' }}">Jewellery</a>
-    <a href="/?category=men" class="{{ 'active' if selected_category=='men' else '' }}">Men</a>
-    <a href="/?category=women" class="{{ 'active' if selected_category=='women' else '' }}">Women</a>
-    <a href="/?category=kids" class="{{ 'active' if selected_category=='kids' else '' }}">Kids</a>
-    <a href="/?category=cosmetics" class="{{ 'active' if selected_category=='cosmetics' else '' }}">Cosmetics</a>
-    <a href="/?category=toys" class="{{ 'active' if selected_category=='toys' else '' }}">Toys</a>
-    <a href="/?category=carry" class="{{ 'active' if selected_category=='carry' else '' }}">Carry Essentials</a>
-
+    <a href="/?category=jewellery">Jewellery</a>
+    <a href="/?category=men">Men</a>
+    <a href="/?category=women">Women</a>
+    <a href="/?category=kids">Kids</a>
+    <a href="/?category=cosmetics">Cosmetics</a>
+    <a href="/?category=toys">Toys</a>
+    <a href="/?category=carry">Carry Essentials</a>
 </div>
 
 <!-- MAIN -->
@@ -185,7 +225,7 @@ img {
     </h1>
 
     <form method="POST" class="search-box">
-        <input type="text" name="product" placeholder="Search product..." value="">
+        <input type="text" name="product" placeholder="Search product...">
         <button>Search</button>
     </form>
 
@@ -197,15 +237,15 @@ img {
 </div>
 
 {% if products %}
-<h2>Results for "{{ query }}"</h2>
-
 <div class="card-container">
     {% for p in products %}
     <div class="card">
         <img src="{{ p.image }}">
         <h4>{{ p.title }}</h4>
         <p>{{ p.price }}</p>
-        <p>⭐ {{ p.rating }}</p>
+        <p>
+            ⭐ {{ p.rating }}
+        </p>
         <p class="fake-text">Fake: {{ p.fake }}%</p>
         <p class="real-text">Genuine: {{ p.real }}%</p>
         <a href="{{ p.link }}" target="_blank">Amazon</a>
