@@ -24,7 +24,8 @@ def get_products(query):
     products = []
     results = data.get("shopping_results") or data.get("organic_results") or []
 
-    for item in results[:10]:
+    # 🔥 INCREASE PRODUCTS (40+)
+    for item in results[:50]:
         rating = item.get("rating") or round(random.uniform(3.0, 5.0), 1)
 
         products.append({
@@ -37,7 +38,7 @@ def get_products(query):
             "real": random.randint(70, 90)
         })
 
-    # ✅ SORT BY HIGHEST RATING
+    # 🔥 SORT BY RATING
     products = sorted(products, key=lambda x: x["rating"], reverse=True)
 
     return products
