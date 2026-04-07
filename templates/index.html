@@ -10,6 +10,7 @@ body {
     font-family: Poppins;
     margin: 0;
     background: #ffffff;
+    color: #374151;
     display: flex;
 }
 
@@ -17,39 +18,33 @@ body {
 .header {
     position: fixed;
     top: 0;
-    width: 100%;
-    height: 70px;
+    left: 220px;
+    right: 0;
+    height: 60px;
     background: white;
     display: flex;
     align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid #eee;
-    z-index: 1000;
+    justify-content: flex-end;
+    padding-right: 40px;
+    z-index: 10;
+}
+
+.header a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #374151;
 }
 
 /* LOGO */
 .logo {
-    position: absolute;
+    position: fixed;
+    top: 10px;
     left: 20px;
-    font-weight: 900;
     font-size: 28px;
-    background: linear-gradient(90deg,#10b981,#3b82f6,#ef4444);
+    font-weight: 800;
+    background: linear-gradient(45deg, #10b981, #3b82f6, #ef4444);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-/* NAV */
-.topbar {
-    position: absolute;
-    right: 30px;
-}
-
-.topbar a {
-    margin-left: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    color: #374151; /* dark grey */
-    font-weight: 500;
 }
 
 /* SIDEBAR */
@@ -58,32 +53,31 @@ body {
     background: #f3f4f6;
     padding: 20px;
     height: 100vh;
-    margin-top: 70px;
+    margin-top: 60px;
 }
 
-/* CATEGORY BOX (ALL SAME) */
 .sidebar a {
     display: block;
     padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    text-decoration: none;
+    margin-bottom: 8px;
     background: white;
-    color: #374151; /* dark grey text */
-    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #374151;
 }
 
-.sidebar a:hover {
-    background: #e5e7eb;
+/* HIGHLIGHT SELECTED */
+.active {
+    background: #d1d5db;
+    font-weight: bold;
 }
 
 /* MAIN */
 .main {
     flex: 1;
-    padding: 100px 40px;
+    padding: 100px 30px 30px 30px;
 }
 
-/* HERO */
 .hero {
     text-align: center;
 }
@@ -91,7 +85,6 @@ body {
 .hero-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #374151;
 }
 
 .fake { color: red; }
@@ -99,7 +92,7 @@ body {
 
 /* SEARCH */
 .search-box {
-    margin-top: 25px;
+    margin-top: 40px;
 }
 
 input {
@@ -107,7 +100,6 @@ input {
     width: 300px;
     border-radius: 25px;
     border: 1px solid #ccc;
-    color: #374151;
 }
 
 button {
@@ -120,18 +112,14 @@ button {
 
 /* SUGGESTIONS */
 .suggestions {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+    margin-top: 20px;
 }
 
-.suggestions a {
+.suggestions span {
     padding: 8px 12px;
+    margin: 5px;
     background: #e5e7eb;
     border-radius: 15px;
-    text-decoration: none;
-    color: #374151;
 }
 
 /* PRODUCTS */
@@ -139,6 +127,7 @@ button {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+    margin-top: 30px;
 }
 
 .card {
@@ -146,7 +135,6 @@ button {
     padding: 15px;
     border-radius: 10px;
     text-align: center;
-    color: #374151;
 }
 
 img {
@@ -155,92 +143,36 @@ img {
     object-fit: contain;
 }
 
-.stars {
-    color: gold;
-}
+.fake-text { color: red; }
+.real-text { color: green; }
 
-/* FAKE / GENUINE */
-.fake-text { color: red; font-weight:600;}
-.real-text { color: green; font-weight:600;}
-
-.buy-btn {
-    background: #10b981;
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-    display: inline-block;
-    margin-top: 10px;
-}
-
-/* MODAL */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.4);
-    justify-content:center;
-    align-items:center;
-    z-index:2000;
-}
-
-.modal-box {
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    width:400px;
-    color:#374151;
-}
 </style>
-
-<script>
-function openModal(type){
-    document.getElementById("modal").style.display="flex";
-
-    if(type==="about"){
-        document.getElementById("modalContent").innerHTML =
-        "<h3>About TrustScan</h3><p>TrustScan helps users identify genuine vs fake reviews so they can make smarter purchasing decisions.</p>";
-    }
-    else{
-        document.getElementById("modalContent").innerHTML =
-        "<h3>How it works</h3><p>Our system analyzes large volumes of product reviews, detects unusual patterns, repeated phrases, and spam behavior to estimate fake vs genuine reviews.</p>";
-    }
-}
-
-function closeModal(){
-    document.getElementById("modal").style.display="none";
-}
-</script>
-
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <div class="logo">TrustScan</div>
+<div class="logo">TrustScan</div>
 
-    <div class="topbar">
-        <a href="/">Home</a>
-        <a onclick="openModal('about')">About</a>
-        <a onclick="openModal('how')">How it works</a>
-    </div>
+<div class="header">
+    <a href="/">Home</a>
+    <a href="#">About</a>
+    <a href="#">How it works</a>
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-    <h3 style="color:#374151;">Categories</h3>
-    <a href="/?category=electronics">Electronics</a>
-    <a href="/?category=home">Home & Kitchen</a>
-    <a href="/?category=jewellery">Jewellery</a>
-    <a href="/?category=men">Men</a>
-    <a href="/?category=women">Women</a>
-    <a href="/?category=kids">Kids</a>
-    <a href="/?category=cosmetics">Cosmetics</a>
-    <a href="/?category=toys">Toys</a>
-    <a href="/?category=carry">Carry Essentials</a>
+    <h3>Categories</h3>
+
+    <a href="/?category=electronics" class="{{ 'active' if selected_category=='electronics' else '' }}">Electronics</a>
+    <a href="/?category=home" class="{{ 'active' if selected_category=='home' else '' }}">Home & Kitchen</a>
+    <a href="/?category=jewellery" class="{{ 'active' if selected_category=='jewellery' else '' }}">Jewellery</a>
+    <a href="/?category=men" class="{{ 'active' if selected_category=='men' else '' }}">Men</a>
+    <a href="/?category=women" class="{{ 'active' if selected_category=='women' else '' }}">Women</a>
+    <a href="/?category=kids" class="{{ 'active' if selected_category=='kids' else '' }}">Kids</a>
+    <a href="/?category=cosmetics" class="{{ 'active' if selected_category=='cosmetics' else '' }}">Cosmetics</a>
+    <a href="/?category=toys" class="{{ 'active' if selected_category=='toys' else '' }}">Toys</a>
+    <a href="/?category=carry" class="{{ 'active' if selected_category=='carry' else '' }}">Carry Essentials</a>
+
 </div>
 
 <!-- MAIN -->
@@ -253,19 +185,19 @@ function closeModal(){
     </h1>
 
     <form method="POST" class="search-box">
-        <input type="text" name="product" value="{{ query }}" placeholder="Search product...">
+        <input type="text" name="product" placeholder="Search product..." value="">
         <button>Search</button>
     </form>
 
     <div class="suggestions">
         {% for s in suggestions[:4] %}
-        <a href="/?query={{ s }}">{{ s }}</a>
+        <span>{{ s }}</span>
         {% endfor %}
     </div>
 </div>
 
 {% if products %}
-<h2 style="color:#374151;">Results for "{{ query }}"</h2>
+<h2>Results for "{{ query }}"</h2>
 
 <div class="card-container">
     {% for p in products %}
@@ -273,26 +205,15 @@ function closeModal(){
         <img src="{{ p.image }}">
         <h4>{{ p.title }}</h4>
         <p>{{ p.price }}</p>
-
-        <div class="stars">
-            {% for i in range(p.rating|int) %} ★ {% endfor %}
-            ({{ p.rating }})
-        </div>
-
+        <p>⭐ {{ p.rating }}</p>
         <p class="fake-text">Fake: {{ p.fake }}%</p>
         <p class="real-text">Genuine: {{ p.real }}%</p>
-
-        <a href="{{ p.link }}" target="_blank" class="buy-btn">Amazon</a>
+        <a href="{{ p.link }}" target="_blank">Amazon</a>
     </div>
     {% endfor %}
 </div>
 {% endif %}
 
-</div>
-
-<!-- MODAL -->
-<div id="modal" class="modal" onclick="closeModal()">
-    <div class="modal-box" id="modalContent" onclick="event.stopPropagation()"></div>
 </div>
 
 </body>
