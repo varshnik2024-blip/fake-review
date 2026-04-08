@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ✅ KEEPING YOUR ORIGINAL CSS EXACTLY SAME */
 body {
     font-family: Poppins;
     margin: 0;
@@ -261,18 +262,25 @@ function searchSuggestion(value) {
 <div class="card-container">
     {% for p in products %}
     <div class="card">
-        <img src="{{ p.image }}">
+
+        <!-- ✅ FIXED IMAGE (NO BROKEN IMAGE EVER) -->
+        <img src="{{ p.image }}"
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=Product';">
+
         <h4>{{ p.title }}</h4>
         <p>{{ p.price }}</p>
 
-        <!-- ⭐ FINAL AMAZON STAR -->
         <div class="stars" style="--rating: {{ p.rating }}"></div>
         <p>{{ p.rating }}</p>
 
         <p class="fake-text">Fake: {{ p.fake }}%</p>
         <p class="real-text">Genuine: {{ p.real }}%</p>
 
-        <a href="{{ p.link }}" target="_blank">Amazon</a>
+        <!-- ✅ FIXED AMAZON LINK -->
+        <a href="{{ p.link if p.link else 'https://www.amazon.in/s?k=' + query }}" target="_blank">
+            Amazon
+        </a>
+
     </div>
     {% endfor %}
 </div>
